@@ -1,13 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="fkNqhM" name="SampleSorter" projectType="guiapp" useAppConfig="0"
+<JUCERPROJECT id="fkNqhM" name="SampleSorter" projectType="guiapp" useAppConfig="1"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
   <MAINGROUP id="I9G21L" name="SampleSorter">
+    <GROUP id="{4C3166AD-1E63-5615-4144-60602604E570}" name="DataModels">
+      <FILE id="Y6MyeC" name="SampleInfo.cpp" compile="1" resource="0" file="Source/DataModels/SampleInfo.cpp"/>
+      <FILE id="DBkZqh" name="SampleInfo.h" compile="0" resource="0" file="Source/DataModels/SampleInfo.h"/>
+      <FILE id="hcLthR" name="SampleLibrary.cpp" compile="1" resource="0"
+            file="Source/DataModels/SampleLibrary.cpp"/>
+      <FILE id="yEL1y5" name="SampleLibrary.h" compile="0" resource="0" file="Source/DataModels/SampleLibrary.h"/>
+    </GROUP>
+    <GROUP id="{7AB4DEBC-68CA-2641-5784-E40F66BA529F}" name="core"/>
+    <GROUP id="{57526AA9-EF36-A696-13F9-E1705C541622}" name="util">
+      <FILE id="qBwt3A" name="FileUtils.cpp" compile="1" resource="0" file="Source/Utils/FileUtils.cpp"/>
+      <FILE id="MypGnw" name="FileUtils.h" compile="0" resource="0" file="Source/Utils/FileUtils.h"/>
+      <FILE id="vGyKF2" name="ValueTreeObjectList.cpp" compile="1" resource="0"
+            file="Source/Utils/ValueTreeObjectList.cpp"/>
+      <FILE id="S8jJrA" name="ValueTreeObjectList.h" compile="0" resource="0"
+            file="Source/Utils/ValueTreeObjectList.h"/>
+    </GROUP>
+    <GROUP id="{70DC7FB3-55D8-769D-2605-061BF484BC22}" name="GUI">
+      <FILE id="lVyHuv" name="FileDisplayComponents.cpp" compile="1" resource="0"
+            file="Source/GUI/FileDisplayComponents.cpp"/>
+      <FILE id="qhD03V" name="FileDisplayComponents.h" compile="0" resource="0"
+            file="Source/GUI/FileDisplayComponents.h"/>
+      <FILE id="iJo69q" name="FileExplorer.cpp" compile="1" resource="0"
+            file="Source/GUI/FileExplorer.cpp"/>
+      <FILE id="sgrIEQ" name="FileExplorer.h" compile="0" resource="0" file="Source/GUI/FileExplorer.h"/>
+      <FILE id="RXlOIl" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/GUI/MainComponent.cpp"/>
+      <FILE id="DIAnJP" name="MainComponent.h" compile="0" resource="0" file="Source/GUI/MainComponent.h"/>
+    </GROUP>
     <GROUP id="{7EA514B4-8DEE-B87A-7396-95EEC350CC40}" name="Source">
       <FILE id="bJfKYU" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="iVghLe" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
-      <FILE id="dGjRDr" name="MainComponent.cpp" compile="1" resource="0"
-            file="Source/MainComponent.cpp"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
