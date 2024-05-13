@@ -77,6 +77,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -89,17 +90,20 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\Utils;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\JuceLibraryCode;C:\Users\camro\Documents\Development\Frameworks\JUCE\modules;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\UnitTest1;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\DataModels;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\GUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\JuceLibraryCode;$(VCInstallDir)UnitTest\lib;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Builds\VisualStudio2022\x64\Debug\App;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FileUtils.obj;SampleInfo.obj;SampleLibrary.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -156,6 +160,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_basics.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_devices.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_formats.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_processors.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_processors_ara.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_processors_lv2_libs.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_utils.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_core.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_data_structures.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_events.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_graphics.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_gui_basics.cpp" />
+    <ClCompile Include="..\JuceLibraryCode\include_juce_gui_extra.cpp" />
+    <ClCompile Include="DataModels\SampleInfoTests.cpp" />
+    <ClCompile Include="DataModels\SampleLibraryTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -163,14 +182,30 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UnitTest1.cpp" />
+    <ClCompile Include="Utils\FileUtilsTests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\JuceLibraryCode\AppConfig.h" />
+    <ClInclude Include="..\JuceLibraryCode\JuceHeader.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VisualStudio2022\SampleSorter_App.vcxproj">
+    <ProjectReference Include="..\Builds\VisualStudio2022\SampleSorter_App.vcxproj">
       <Project>{2a12b63a-6dfd-3ea9-e28b-f0f5d69f347b}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\JuceLibraryCode\include_juce_audio_basics.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_audio_devices.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_audio_formats.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_audio_processors.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_audio_utils.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_core.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_data_structures.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_events.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_graphics.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_gui_basics.mm" />
+    <None Include="..\JuceLibraryCode\include_juce_gui_extra.mm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

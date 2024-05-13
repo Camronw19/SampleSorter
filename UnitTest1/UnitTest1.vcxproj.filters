@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="JUCE Library Code">
+      <UniqueIdentifier>{03506ea0-581d-43d0-bda6-ad4693366e5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{b3543c8c-98e6-437f-b51e-d49fb254d5e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DataModels">
+      <UniqueIdentifier>{718d2174-0cf9-46ef-ac0e-fdb2af7f6fea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnitTest1.cpp">
@@ -21,10 +30,99 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_basics.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_devices.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_formats.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_processors.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_processors_ara.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_processors_lv2_libs.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_audio_utils.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_core.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_data_structures.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_events.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_graphics.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_gui_basics.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\JuceLibraryCode\include_juce_gui_extra.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\FileUtilsTests.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="DataModels\SampleLibraryTests.cpp">
+      <Filter>Source Files\DataModels</Filter>
+    </ClCompile>
+    <ClCompile Include="DataModels\SampleInfoTests.cpp">
+      <Filter>Source Files\DataModels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\JuceLibraryCode\AppConfig.h">
+      <Filter>JUCE Library Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\JuceLibraryCode\JuceHeader.h">
+      <Filter>JUCE Library Code</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\JuceLibraryCode\include_juce_audio_basics.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_audio_devices.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_audio_formats.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_audio_processors.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_audio_utils.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_core.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_data_structures.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_events.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_graphics.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_gui_basics.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
+    <None Include="..\JuceLibraryCode\include_juce_gui_extra.mm">
+      <Filter>JUCE Library Code</Filter>
+    </None>
   </ItemGroup>
 </Project>
