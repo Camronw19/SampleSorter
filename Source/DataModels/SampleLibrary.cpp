@@ -17,7 +17,7 @@ SampleLibraryDataModel::SampleLibraryDataModel()
 }
 
 SampleLibraryDataModel::SampleLibraryDataModel(const SampleLibraryDataModel& other)
-    :SampleLibraryDataModel(other.State())
+    :SampleLibraryDataModel(other.getState())
 {
 
 }
@@ -31,25 +31,25 @@ SampleLibraryDataModel::SampleLibraryDataModel(const juce::ValueTree& value_tree
 
 void SampleLibraryDataModel::AddSample(const SampleInfoDataModel& sample_info)
 {
-    vt.addChild(sample_info.State(), -1, nullptr); 
+    vt.addChild(sample_info.getState(), -1, nullptr); 
 }
 
 // Getters
 
-inline const juce::ValueTree SampleLibraryDataModel::State() const
+inline const juce::ValueTree SampleLibraryDataModel::getState() const
 {
     return vt; 
 }
 
 
-inline juce::String SampleLibraryDataModel::Name() const
+inline juce::String SampleLibraryDataModel::getName() const
 {
     return name.get(); 
 }
 
 // Setters 
 
-void SampleLibraryDataModel::SetName(const juce::String new_name)
+void SampleLibraryDataModel::setName(const juce::String new_name)
 {
     name.setValue(new_name, nullptr);
 }

@@ -26,26 +26,26 @@ SampleInfoDataModel::SampleInfoDataModel(const juce::ValueTree& value_tree)
 }
 
 SampleInfoDataModel::SampleInfoDataModel(const SampleInfoDataModel& other)
-    :SampleInfoDataModel(other.State())
+    :SampleInfoDataModel(other.getState())
 {
  
 }
 
 // Getters
-inline const juce::ValueTree SampleInfoDataModel::State() const
+const juce::ValueTree SampleInfoDataModel::getState() const
 {
     return vt; 
 }
 
 
-juce::String SampleInfoDataModel::Name() const
+juce::String SampleInfoDataModel::getName() const
 {
     return name.get(); 
 }
 
 // Setters 
 
-void SampleInfoDataModel::SetName(const juce::String new_name)
+void SampleInfoDataModel::setName(const juce::String new_name)
 {
     name.setValue(new_name, nullptr); 
 }
