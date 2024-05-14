@@ -55,4 +55,36 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FileList)
 };
 
+class FileListTable : public juce::Component,
+                      public juce::TableListBoxModel, 
+                      public SampleLibraryDataModel::Listener
+{
+public:
+    FileListTable(juce::ValueTree);
+    ~FileListTable() override;
+
+    void paint(juce::Graphics&) override;
+    void resized() override;
+
+    int getNumRows() override;
+    void paintRowBackground(juce::Graphics&, int, int, int, bool) override;
+    void paintCell(juce::Graphics&, int, int, int, int, bool) override;
+
+private:
+    void initTable();
+    void initHeaders();
+    void loadData(); 
+
+    juce::String getAttributeNameForColumnId(const int) const;
+
+    SampleLibraryDataModel m_sample_library;
+    void SampleAdded(const SampleInfoDataModel&) override; 
+
+    juce::TableListBox m_table;
+    std::unique_ptr<juce::XmlElement> m_data_list;
+    int m_num_rows;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FileListTable)
+};
+
 
