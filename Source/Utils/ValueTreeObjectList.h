@@ -13,7 +13,14 @@
 #include <JuceHeader.h>
 
 //==============================================================================
+template <typename T>
+concept HasGetStateMethod = requires(T t)
+{
+    { t.getState() } -> std::same_as<juce::ValueTree>;
+};
+
 template<typename ObjectType, typename CriticalSectionType = juce::DummyCriticalSection>
+requires HasGetStateMethod<ObjectType>
 class ValueTreeObjectList : public juce::ValueTree::Listener
 {
 public:
@@ -25,18 +32,18 @@ public:
 
     virtual ~ValueTreeObjectList()
     {
-        jassert(objects.size() == 0); // must call freeObjects() in the subclass destructor!
+        jassert(m_objects.size() == 0); // must call freeObjects() in the subclass destructor!
     }
 
     // call in the sub-class when being created
     void rebuildObjects()
     {
-        jassert(objects.size() == 0); // must only call this method once at construction
+        jassert(m_objects.size() == 0); // must only call this method once at construction
 
         for (const auto& v : parent)
             if (isSuitableType(v))
                 if (ObjectType* newObject = createNewObject(v))
-                    objects.add(newObject);
+                    m_objects.add(newObject);
     }
 
     // call in the sub-class when being destroyed
@@ -67,12 +74,12 @@ public:
             if (ObjectType* newObject = createNewObject(tree))
             {
                 {
-                    const ScopedLockType sl(arrayLock);
+                    const ScopedLockType sl(m_array_lock);
 
                     if (index == parent.getNumChildren() - 1)
-                        objects.add(newObject);
+                        m_objects.add(newObject);
                     else
-                        objects.addSorted(*this, newObject);
+                        m_objects.addSorted(*this, newObject);
                 }
 
                 newObjectAdded(newObject);
@@ -93,8 +100,8 @@ public:
                 ObjectType* o;
 
                 {
-                    const ScopedLockType sl(arrayLock);
-                    o = objects.removeAndReturn(oldIndex);
+                    const ScopedLockType sl(m_array_lock);
+                    o = m_objects.removeAndReturn(oldIndex);
                 }
 
                 objectRemoved(o);
@@ -108,7 +115,7 @@ public:
         if (tree == parent)
         {
             {
-                const ScopedLockType sl(arrayLock);
+                const ScopedLockType sl(m_array_lock);
                 sortArray();
             }
 
@@ -121,8 +128,8 @@ public:
 
     void valueTreeRedirected(juce::ValueTree&) override { jassertfalse; } // may need to add handling if this is hit
 
-    juce::Array<ObjectType*> objects;
-    CriticalSectionType arrayLock;
+    juce::Array<ObjectType*> m_objects;
+    CriticalSectionType m_array_lock;
     typedef typename CriticalSectionType::ScopedLockType ScopedLockType;
 
 protected:
@@ -130,10 +137,10 @@ protected:
 
     void deleteAllObjects()
     {
-        const ScopedLockType sl(arrayLock);
+        const ScopedLockType sl(m_array_lock);
 
-        while (objects.size() > 0)
-            deleteObject(objects.removeAndReturn(objects.size() - 1));
+        while (m_objects.size() > 0)
+            deleteObject(m_objects.removeAndReturn(m_objects.size() - 1));
     }
 
     bool isChildTree(juce::ValueTree& v) const
@@ -143,8 +150,8 @@ protected:
 
     int indexOf(const juce::ValueTree& v) const noexcept
     {
-        for (int i = 0; i < objects.size(); ++i)
-            if (objects.getUnchecked(i)->getState() == v)
+        for (int i = 0; i < m_objects.size(); ++i)
+            if (m_objects.getUnchecked(i)->getState() == v)
                 return i;
 
         return -1;
@@ -152,7 +159,7 @@ protected:
 
     void sortArray()
     {
-        objects.sort(*this);
+        m_objects.sort(*this);
     }
 
 public:
