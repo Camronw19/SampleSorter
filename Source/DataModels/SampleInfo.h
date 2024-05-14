@@ -16,6 +16,7 @@ namespace ModelIdentifiers
     #define DECLARE_ID(name) const juce::Identifier(name) (#name); 
 
     DECLARE_ID(SAMPLE_INFO)
+    DECLARE_ID(id)
     DECLARE_ID(name)
 }
 
@@ -28,13 +29,16 @@ public:
 
     // Getters
     const juce::ValueTree getState() const; 
+    int32_t getId() const; 
     juce::String getName() const; 
 
     // Setters 
     void setName(const juce::String); 
 
 private: 
+    static int32_t m_instance_id; 
 
-    juce::ValueTree vt; 
-    juce::CachedValue<juce::String> name; 
+    juce::ValueTree m_vt; 
+    juce::CachedValue<int32_t> m_id; 
+    juce::CachedValue<juce::String> m_name; 
  };

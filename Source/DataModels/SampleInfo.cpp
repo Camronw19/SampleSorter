@@ -10,42 +10,51 @@
 
 #include "SampleInfo.h"
 
+int32_t SampleInfoDataModel::m_instance_id = 1; 
 
 SampleInfoDataModel::SampleInfoDataModel()
-    : SampleInfoDataModel(juce::ValueTree(ModelIdentifiers::SAMPLE_INFO))
+    : m_vt(juce::ValueTree(ModelIdentifiers::SAMPLE_INFO)),
+    m_id(m_vt, ModelIdentifiers::id, nullptr),
+    m_name(m_vt, ModelIdentifiers::name, nullptr)
 {
-
+    m_id.setValue(m_instance_id, nullptr);
+    ++m_instance_id;
 }
 
 
-SampleInfoDataModel::SampleInfoDataModel(const juce::ValueTree& value_tree)
-    : vt(value_tree),
-    name(vt, ModelIdentifiers::name, nullptr)
+SampleInfoDataModel::SampleInfoDataModel(const juce::ValueTree& vt)
+    : m_vt(vt),
+    m_id(m_vt, ModelIdentifiers::id, nullptr),
+    m_name(m_vt, ModelIdentifiers::name, nullptr)
 {
-    jassert(value_tree.hasType(ModelIdentifiers::SAMPLE_INFO));
+    jassert(vt.hasType(ModelIdentifiers::SAMPLE_INFO));
 }
 
 SampleInfoDataModel::SampleInfoDataModel(const SampleInfoDataModel& other)
-    :SampleInfoDataModel(other.getState())
+    : SampleInfoDataModel(other.getState())
 {
- 
+
 }
 
 // Getters
 const juce::ValueTree SampleInfoDataModel::getState() const
 {
-    return vt; 
+    return m_vt; 
 }
 
+int32_t SampleInfoDataModel::getId() const
+{
+    return m_id; 
+}
 
 juce::String SampleInfoDataModel::getName() const
 {
-    return name.get(); 
+    return m_name.get(); 
 }
 
 // Setters 
 
 void SampleInfoDataModel::setName(const juce::String new_name)
 {
-    name.setValue(new_name, nullptr); 
+    m_name.setValue(new_name, nullptr); 
 }
