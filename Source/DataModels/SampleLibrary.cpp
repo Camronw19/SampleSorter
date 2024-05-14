@@ -11,7 +11,8 @@
 #include "SampleLibrary.h"
 
 SampleLibraryDataModel::SampleLibraryDataModel()
-    : SampleLibraryDataModel(juce::ValueTree(ModelIdentifiers::SAMPLE_LIBRARY))
+    : m_vt(juce::ValueTree(ModelIdentifiers::SAMPLE_LIBRARY)),
+      m_name(m_vt, ModelIdentifiers::name, nullptr)
 {
 
 }
@@ -22,34 +23,34 @@ SampleLibraryDataModel::SampleLibraryDataModel(const SampleLibraryDataModel& oth
 
 }
 
-SampleLibraryDataModel::SampleLibraryDataModel(const juce::ValueTree& value_tree)
-    :vt(value_tree),
-    name(vt, ModelIdentifiers::name, nullptr)
+SampleLibraryDataModel::SampleLibraryDataModel(const juce::ValueTree& vt)
+    :m_vt(vt),
+    m_name(m_vt, ModelIdentifiers::name, nullptr)
 {
     jassert(vt.hasType(ModelIdentifiers::SAMPLE_LIBRARY)); 
 }
 
 void SampleLibraryDataModel::AddSample(const SampleInfoDataModel& sample_info)
 {
-    vt.addChild(sample_info.getState(), -1, nullptr); 
+    m_vt.addChild(sample_info.getState(), -1, nullptr); 
 }
 
 // Getters
 
-inline const juce::ValueTree SampleLibraryDataModel::getState() const
+const juce::ValueTree SampleLibraryDataModel::getState() const
 {
-    return vt; 
+    return m_vt; 
 }
 
 
-inline juce::String SampleLibraryDataModel::getName() const
+juce::String SampleLibraryDataModel::getName() const
 {
-    return name.get(); 
+    return m_name.get(); 
 }
 
 // Setters 
 
 void SampleLibraryDataModel::setName(const juce::String new_name)
 {
-    name.setValue(new_name, nullptr);
+    m_name.setValue(new_name, nullptr);
 }

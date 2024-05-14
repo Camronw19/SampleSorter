@@ -27,14 +27,14 @@ public:
     void AddSample(const SampleInfoDataModel&); 
 
     // Getters
-    inline const juce::ValueTree getState() const; 
-    inline juce::String getName() const; 
+    const juce::ValueTree getState() const; 
+    juce::String getName() const; 
 
     // Setters
     void setName(const juce::String); 
 
 private: 
 
-    juce::ValueTree vt;
-    juce::CachedValue<juce::String> name; 
+    juce::ValueTree m_vt;
+    juce::CachedValue<juce::String> m_name; 
 };
