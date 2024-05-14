@@ -13,48 +13,42 @@
 
 namespace spacing
 {
-    static const int padding1 = 20;
-    static const int padding2 = 15;
-    static const int padding3 = 10;
-    static const int padding4 = 5;
+    static const int padding1 = 5;
+    static const int padding2 = 10;
+    static const int padding3 = 15;
+    static const int padding4 = 20;
 };
 
 namespace AppColors
 {
     namespace Dark
     {
-        static const juce::Colour textPrimary = juce::Colours::white;
-        static const juce::Colour textSecondary = juce::Colour::fromRGBA(255, 255, 255, 178); // 0.7 opacity
-        static const juce::Colour textDisabled = juce::Colour::fromRGBA(255, 255, 255, 127); // 0.5 opacity
-
-        static const juce::Colour actionActive = juce::Colours::white;
-        static const juce::Colour actionHover = juce::Colour::fromRGBA(255, 255, 255, 20); // 0.08 opacity
-        static const juce::Colour actionSelected = juce::Colour::fromRGBA(255, 255, 255, 41); // 0.16 opacity
-        static const juce::Colour actionDisabled = juce::Colour::fromRGBA(255, 255, 255, 76); // 0.3 opacity
-        static const juce::Colour actionDisabledBackground = juce::Colour::fromRGBA(255, 255, 255, 31); // 0.12 opacity
-
-        static const juce::Colour backgroundDefault = juce::Colour::fromRGB(18, 18, 18);
-        static const juce::Colour backgroundPaper = juce::Colour::fromRGB(18, 18, 18);
-
-        static const juce::Colour divider = juce::Colour::fromRGBA(255, 255, 255, 31); // 0.12 
-
-        static const juce::Colour accent = juce::Colour::fromString("#FFBA93FB");
+        static const juce::Colour Primary        = juce::Colour::fromString("#FFBB86FC");
+        static const juce::Colour PrimaryVarient = juce::Colour::fromString("#FF3700B3");
+        static const juce::Colour Secondary      = juce::Colour::fromString("#FF03DAC6");
+        static const juce::Colour Background     = juce::Colour::fromString("#FF121212");
+        static const juce::Colour Surface        = juce::Colour::fromFloatRGBA(1.0f, 1.0f, 1.0f, 0.05f);
+        static const juce::Colour Error          = juce::Colour::fromString("#FFCF6679");
+        static const juce::Colour OnPrimary      = juce::Colour::fromString("#FF000000");
+        static const juce::Colour OnSecondary    = juce::Colour::fromString("#FF000000");
+        static const juce::Colour OnBackground   = juce::Colour::fromString("#FFFFFFFF");
+        static const juce::Colour OnSurface      = juce::Colour::fromString("#FFFFFFFF");
+        static const juce::Colour OnError        = juce::Colour::fromString("#FF000000");
     }
 
     enum ColourIds
     {
-        TextPrimary = 0x2000000,
-        TextSecondary,
-        TextDisabled,
-        ActionActive,
-        ActionHover,
-        ActionSelected,
-        ActionDisabled,
-        ActionDisabledBackground,
-        BackgroundDefault,
-        BackgroundPaper,
-        Divider,
-        Accent,
+        Primary = 0x2000000,
+        PrimaryVarient, 
+        Secondary, 
+        Background,
+        Surface, 
+        Error, 
+        OnPrimary,
+        OnSecondary,
+        OnBackground,
+        OnSurface,
+        OnError
     };
 };
 
@@ -63,28 +57,18 @@ class DarkLookAndFeel : public juce::LookAndFeel_V4
 public:
     DarkLookAndFeel()
     {
-        //Sliders
-        setColour(juce::Slider::thumbColourId, AppColors::Dark::actionActive);
-        setColour(juce::Slider::rotarySliderOutlineColourId, AppColors::Dark::backgroundDefault);
-        setColour(juce::Slider::rotarySliderFillColourId, AppColors::Dark::accent);
-
-        setColour(juce::Slider::ColourIds::backgroundColourId, AppColors::Dark::backgroundDefault);
-        setColour(juce::Slider::ColourIds::trackColourId, AppColors::Dark::accent);
-
-
         // Associate each custom ColourId with its corresponding Colour
-        setColour(AppColors::ColourIds::TextPrimary, AppColors::Dark::textPrimary);
-        setColour(AppColors::ColourIds::TextSecondary, AppColors::Dark::textSecondary);
-        setColour(AppColors::ColourIds::TextDisabled, AppColors::Dark::textDisabled);
-        setColour(AppColors::ColourIds::ActionActive, AppColors::Dark::actionActive);
-        setColour(AppColors::ColourIds::ActionHover, AppColors::Dark::actionHover);
-        setColour(AppColors::ColourIds::ActionSelected, AppColors::Dark::actionSelected);
-        setColour(AppColors::ColourIds::ActionDisabled, AppColors::Dark::actionDisabled);
-        setColour(AppColors::ColourIds::ActionDisabledBackground, AppColors::Dark::actionDisabledBackground);
-        setColour(AppColors::ColourIds::BackgroundDefault, AppColors::Dark::backgroundDefault);
-        setColour(AppColors::ColourIds::BackgroundPaper, AppColors::Dark::backgroundPaper);
-        setColour(AppColors::ColourIds::Divider, AppColors::Dark::divider);
-        setColour(AppColors::ColourIds::Accent, AppColors::Dark::accent);
+        setColour(AppColors::ColourIds::Primary,        AppColors::Dark::Primary);
+        setColour(AppColors::ColourIds::PrimaryVarient, AppColors::Dark::PrimaryVarient);
+        setColour(AppColors::ColourIds::Secondary,      AppColors::Dark::Secondary);
+        setColour(AppColors::ColourIds::Background,     AppColors::Dark::Background);
+        setColour(AppColors::ColourIds::Surface,        AppColors::Dark::Surface);
+        setColour(AppColors::ColourIds::Error,          AppColors::Dark::Error);
+        setColour(AppColors::ColourIds::OnPrimary,      AppColors::Dark::OnPrimary);
+        setColour(AppColors::ColourIds::OnSecondary,    AppColors::Dark::OnSecondary);
+        setColour(AppColors::ColourIds::OnBackground,   AppColors::Dark::OnBackground);
+        setColour(AppColors::ColourIds::OnSurface,      AppColors::Dark::OnSurface);
+        setColour(AppColors::ColourIds::OnError,        AppColors::Dark::OnError);
     }
 };
 
