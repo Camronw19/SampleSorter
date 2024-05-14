@@ -29,6 +29,7 @@
       <FILE id="RXlOIl" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/GUI/MainComponent.cpp"/>
       <FILE id="DIAnJP" name="MainComponent.h" compile="0" resource="0" file="Source/GUI/MainComponent.h"/>
+      <FILE id="T9PNAY" name="UIConfig.h" compile="0" resource="0" file="Source/GUI/UIConfig.h"/>
     </GROUP>
     <GROUP id="{7EA514B4-8DEE-B87A-7396-95EEC350CC40}" name="Source">
       <FILE id="bJfKYU" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
