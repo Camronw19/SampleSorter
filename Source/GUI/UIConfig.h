@@ -104,5 +104,36 @@ public:
 
         setComponentColors(*this); 
     }
+
+    void drawTableHeaderColumn(juce::Graphics& g, juce::TableHeaderComponent& header,
+        const juce::String& columnName, int /*columnId*/,
+        int width, int height, bool isMouseOver, bool isMouseDown,
+        int columnFlags) 
+    {
+        auto highlightColour = header.findColour(juce::TableHeaderComponent::highlightColourId);
+
+        if (isMouseDown)
+            g.fillAll(highlightColour);
+        else if (isMouseOver)
+            g.fillAll(highlightColour.withMultipliedAlpha(0.625f));
+
+        juce::Rectangle<int> area(width, height);
+        area.reduce(4, 0);
+
+        if ((columnFlags & (juce::TableHeaderComponent::sortedForwards | juce::TableHeaderComponent::sortedBackwards)) != 0)
+        {
+            juce::Path sortArrow;
+            sortArrow.addTriangle(0.0f, 0.0f,
+                0.5f, (columnFlags & juce::TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
+                1.0f, 0.0f);
+
+            g.setColour(findColour(AppColors::OnBackground));
+            g.fillPath(sortArrow, sortArrow.getTransformToScaleToFit(area.removeFromRight(height / 2).reduced(2).toFloat(), true));
+        }
+
+        g.setColour(header.findColour(juce::TableHeaderComponent::textColourId));
+        g.setFont(juce::Font((float)height * 0.5f, juce::Font::bold));
+        g.drawFittedText(columnName, area, juce::Justification::centredLeft, 1);
+    }
 };
 
