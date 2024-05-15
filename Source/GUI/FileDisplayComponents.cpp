@@ -10,12 +10,13 @@
 
 #include <JuceHeader.h>
 #include "FileDisplayComponents.h"
+#include "UIConfig.h"
 
 //==============================================================================
 FileListItem::FileListItem(juce::ValueTree sample_info)
     :m_sample_info(sample_info)
 {
-
+    
 }
 
 FileListItem::~FileListItem()
@@ -24,16 +25,7 @@ FileListItem::~FileListItem()
 
 void FileListItem::paint (juce::Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);
-
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    juce::String name = m_sample_info.getName(); 
-    g.drawText (name, getLocalBounds(),
-                juce::Justification::centred, true);
 }
 
 void FileListItem::resized()
@@ -112,7 +104,8 @@ void FileList::objectOrderChanged()
 FileListTable::FileListTable(juce::ValueTree vt)
     :m_sample_library(vt),
      m_table("FileListTable", this), 
-     m_num_rows(0)
+     m_num_rows(0), 
+     m_font(14.f)
 {
     m_sample_library.addListener(*this); 
 
@@ -128,23 +121,20 @@ FileListTable::~FileListTable()
 
 void FileListTable::paint(juce::Graphics& g)
 {
-    auto bounds = getBounds();
-    g.setColour(juce::Colours::aliceblue); 
-    g.drawRect(bounds); 
+    g.setColour(getLookAndFeel().findColour(AppColors::Surface1dp));
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), rounding::rounding1);
 }
 
 void FileListTable::resized()
 {
-    auto bounds = getBounds(); 
-    m_table.setBounds(bounds); 
+    juce::Rectangle<int> bounds = getLocalBounds(); 
+    m_table.setBounds(bounds.reduced(0, spacing::padding1));
 }
 
 void FileListTable::initTable()
 {
     addAndMakeVisible(m_table);
 
-    m_table.setColour(juce::ListBox::outlineColourId, juce::Colours::grey); 
-    m_table.setOutlineThickness(1); 
     m_table.getHeader().setSortColumnId(1, true); 
     m_table.setMultipleSelectionEnabled(true); 
 }
@@ -179,35 +169,49 @@ juce::String FileListTable::getAttributeNameForColumnId(const int column_id) con
 void FileListTable::paintRowBackground(juce::Graphics& g, int row_number, 
     int width, int height, bool row_is_selected)
 {
-    juce::Colour alternate_colour = getLookAndFeel().findColour(juce::ListBox::backgroundColourId).
-        interpolatedWith(getLookAndFeel().
-            findColour(juce::ListBox::textColourId), 0.03f); 
+    juce::Colour alternate_colour = getLookAndFeel().findColour(AppColors::Surface1dp);
 
     if (row_is_selected)
-        g.fillAll(juce::Colours::lightblue);
-    else if (row_number % 2)
-        g.fillAll(alternate_colour); 
+    {
+        g.fillAll(getLookAndFeel().findColour(AppColors::PrimaryFocused));
+        g.setColour(getLookAndFeel().findColour(AppColors::Primary));  
+    }
 
 }
 
 void FileListTable::paintCell(juce::Graphics& g, int row_number, 
     int column_id, int width, int height, bool row_is_selected)
 {
-    g.setColour(row_is_selected ? juce::Colours::darkblue : getLookAndFeel().findColour(juce::ListBox::textColourId));  // [5]
-    g.setFont(juce::Font {14.0f});
+    g.setColour(row_is_selected ? getLookAndFeel().findColour(AppColors::Primary) : getLookAndFeel().findColour(AppColors::OnBackground));
+    g.setFont(m_font);
 
     if (auto* rowElement = m_data_list->getChildElement(row_number))
     {
         auto text = rowElement->getStringAttribute(getAttributeNameForColumnId(column_id));
 
-        g.drawText(text, 2, 0, width - 4, height, juce::Justification::centredLeft, true);                             // [6]
+        g.drawText(text, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
-
-    g.setColour(getLookAndFeel().findColour(juce::ListBox::backgroundColourId));
-    g.fillRect(width - 1, 0, 1, height);
 }
 
 void FileListTable::SampleAdded(const SampleInfoDataModel& addedSample)
 {
     loadData(); 
+    m_table.autoSizeAllColumns();
+}
+
+int FileListTable::getColumnAutoSizeWidth(int columnId)
+{
+    int widest = 32;
+
+    for (auto i = getNumRows(); --i >= 0;)
+    {
+        if (auto* rowElement = m_data_list->getChildElement(i))
+        {
+            auto text = rowElement->getStringAttribute(getAttributeNameForColumnId(columnId));
+
+            widest = juce::jmax(widest, m_font.getStringWidth(text));
+        }
+    }
+
+    return widest + spacing::padding2;
 }

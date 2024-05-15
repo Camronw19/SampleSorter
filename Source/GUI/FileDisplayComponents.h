@@ -66,23 +66,28 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    int getNumRows() override;
-    void paintRowBackground(juce::Graphics&, int, int, int, bool) override;
-    void paintCell(juce::Graphics&, int, int, int, int, bool) override;
+    // 
 
 private:
+    // m_table component methods
     void initTable();
     void initHeaders();
     void loadData(); 
-
+    int getNumRows() override;
+    void paintRowBackground(juce::Graphics&, int, int, int, bool) override;
+    void paintCell(juce::Graphics&, int, int, int, int, bool) override;
+    int getColumnAutoSizeWidth(int) override; 
     juce::String getAttributeNameForColumnId(const int) const;
 
-    SampleLibraryDataModel m_sample_library;
     void SampleAdded(const SampleInfoDataModel&) override; 
 
-    juce::TableListBox m_table;
+    // Data models
+    SampleLibraryDataModel m_sample_library;
     std::unique_ptr<juce::XmlElement> m_data_list;
     int m_num_rows;
+
+    juce::TableListBox m_table;
+    juce::Font m_font; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FileListTable)
 };
