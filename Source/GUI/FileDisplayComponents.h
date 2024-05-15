@@ -14,6 +14,7 @@
 #include "SampleInfo.h"
 #include "SampleLibrary.h"
 #include "ValueTreeObjectList.h"
+#include "FileUtils.h"
 
 class FileListItem  : public juce::Component
 {
@@ -57,7 +58,8 @@ private:
 
 class FileListTable : public juce::Component,
                       public juce::TableListBoxModel, 
-                      public SampleLibraryDataModel::Listener
+                      public SampleLibraryDataModel::Listener, 
+                      public AudioFileDragAndDropTarget
 {
 public:
     FileListTable(juce::ValueTree);
@@ -66,19 +68,22 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    // 
-
 private:
     // m_table component methods
+    int getNumRows() override;
+    int getColumnAutoSizeWidth(int) override; 
+    void paintCell(juce::Graphics&, int, int, int, int, bool) override;
+    void paintRowBackground(juce::Graphics&, int, int, int, bool) override;
+    void loadData(); 
     void initTable();
     void initHeaders();
-    void loadData(); 
-    int getNumRows() override;
-    void paintRowBackground(juce::Graphics&, int, int, int, bool) override;
-    void paintCell(juce::Graphics&, int, int, int, int, bool) override;
-    int getColumnAutoSizeWidth(int) override; 
     juce::String getAttributeNameForColumnId(const int) const;
 
+    // File dnd methods
+    void fileDragEnter(const juce::StringArray&, int, int) override;
+    void fileDragExit(const juce::StringArray&) override; 
+
+    // Data model methods
     void SampleAdded(const SampleInfoDataModel&) override; 
 
     // Data models
@@ -86,7 +91,9 @@ private:
     std::unique_ptr<juce::XmlElement> m_data_list;
     int m_num_rows;
 
+    // Components
     juce::TableListBox m_table;
+    AddFileOverlay m_add_file_overlay; 
     juce::Font m_font; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FileListTable)

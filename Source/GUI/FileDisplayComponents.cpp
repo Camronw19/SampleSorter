@@ -105,9 +105,11 @@ FileListTable::FileListTable(juce::ValueTree vt)
     :m_sample_library(vt),
      m_table("FileListTable", this), 
      m_num_rows(0), 
-     m_font(14.f)
+     m_font(14.0f) 
 {
     m_sample_library.addListener(*this); 
+
+    addAndMakeVisible(m_add_file_overlay); 
 
     initTable(); 
     initHeaders(); 
@@ -129,6 +131,7 @@ void FileListTable::resized()
 {
     juce::Rectangle<int> bounds = getLocalBounds(); 
     m_table.setBounds(bounds.reduced(0, spacing::padding1));
+    m_add_file_overlay.setBounds(bounds); 
 }
 
 void FileListTable::initTable()
@@ -136,7 +139,7 @@ void FileListTable::initTable()
     addAndMakeVisible(m_table);
 
     m_table.getHeader().setSortColumnId(1, true); 
-    m_table.setMultipleSelectionEnabled(true); 
+    m_table.setMultipleSelectionEnabled(false); 
 }
 
 void FileListTable::initHeaders()
@@ -187,7 +190,7 @@ void FileListTable::paintCell(juce::Graphics& g, int row_number,
 
     if (auto* rowElement = m_data_list->getChildElement(row_number))
     {
-        auto text = rowElement->getStringAttribute(getAttributeNameForColumnId(column_id));
+        auto& text = rowElement->getStringAttribute(getAttributeNameForColumnId(column_id));
 
         g.drawText(text, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
@@ -207,11 +210,26 @@ int FileListTable::getColumnAutoSizeWidth(int columnId)
     {
         if (auto* rowElement = m_data_list->getChildElement(i))
         {
-            auto text = rowElement->getStringAttribute(getAttributeNameForColumnId(columnId));
+            auto& text = rowElement->getStringAttribute(getAttributeNameForColumnId(columnId));
 
             widest = juce::jmax(widest, m_font.getStringWidth(text));
         }
     }
 
     return widest + spacing::padding2;
+}
+
+void FileListTable::fileDragEnter(const juce::StringArray&, int, int)
+{
+    juce::ComponentAnimator& animator = juce::Desktop::getInstance().getAnimator(); 
+    animator.fadeIn(&m_add_file_overlay, 200); 
+    repaint(); 
+}
+
+void FileListTable::fileDragExit(const juce::StringArray&)
+{
+    juce::ComponentAnimator& animator = juce::Desktop::getInstance().getAnimator(); 
+    animator.fadeOut(&m_add_file_overlay, 200); 
+
+    repaint(); 
 }
