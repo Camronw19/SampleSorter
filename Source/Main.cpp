@@ -8,6 +8,7 @@
 
 #include <JuceHeader.h>
 #include "MainComponent.h"
+#include "UIConfig.h"
 
 //==============================================================================
 class SampleSorterApplication  : public juce::JUCEApplication
@@ -25,6 +26,7 @@ public:
     {
         // This method is where you should put your application's initialisation code..
 
+        juce::LookAndFeel::setDefaultLookAndFeel(&m_dark_lnf);
         mainWindow.reset (new MainWindow (getApplicationName()));
     }
 
@@ -97,6 +99,7 @@ public:
     };
 
 private:
+    DarkLookAndFeel m_dark_lnf; 
     std::unique_ptr<MainWindow> mainWindow;
 };
 
