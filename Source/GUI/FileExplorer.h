@@ -28,7 +28,7 @@ public:
 
 private:
     SampleLibraryDataModel m_sample_library;
-    FileList m_file_list;
+    FileListTable m_file_list;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileExplorer)
 };

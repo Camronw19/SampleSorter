@@ -10,15 +10,18 @@
 
 #include <JuceHeader.h>
 #include "FileExplorer.h"
+#include "UIConfig.h"
 
 //==============================================================================
 FileExplorer::FileExplorer()
     :m_file_list(m_sample_library.getState())
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 20; i++)
     {
-        SampleInfoDataModel sample_model; 
-        sample_model.setName("TEST " + juce::String(i)); 
+        SampleInfoDataModel sample_model;
+
+        juce::String id(sample_model.getId());
+        sample_model.setName("Sample Info " + id); 
         m_sample_library.AddSample(sample_model); 
     }
 
@@ -36,6 +39,6 @@ void FileExplorer::paint (juce::Graphics& g)
 
 void FileExplorer::resized()
 {
-    auto bounds = getBounds(); 
-    m_file_list.setBounds(bounds); 
+    auto bounds = getLocalBounds(); 
+    m_file_list.setBounds(bounds.reduced(spacing::padding2)); 
 }

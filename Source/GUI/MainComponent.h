@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "FileExplorer.h"
+#include "UIConfig.h"
 
 //==============================================================================
 /*
