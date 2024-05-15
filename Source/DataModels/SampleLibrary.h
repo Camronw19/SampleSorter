@@ -17,10 +17,18 @@ namespace ModelIdentifiers
     DECLARE_ID(SAMPLE_LIBRARY)
 }
 
-class SampleLibraryDataModel
+class SampleLibraryDataModel : public juce::ValueTree::Listener
 {
 public: 
+    class Listener
+    {
+    public:
+        virtual ~Listener() noexcept = default;
+        virtual void SampleAdded(const SampleInfoDataModel&) {};
+    };
+
     explicit SampleLibraryDataModel(); 
+    ~SampleLibraryDataModel(); 
     SampleLibraryDataModel(const juce::ValueTree&); 
     SampleLibraryDataModel(const SampleLibraryDataModel&);
 
@@ -33,8 +41,13 @@ public:
     // Setters
     void setName(const juce::String); 
 
+    void addListener(Listener&);
+    void removeListener(Listener&);
 private: 
+    virtual void valueTreeChildAdded(juce::ValueTree&, juce::ValueTree&) override; 
 
     juce::ValueTree m_vt;
     juce::CachedValue<juce::String> m_name; 
+
+    juce::ListenerList<Listener> m_listener_list; 
 };
