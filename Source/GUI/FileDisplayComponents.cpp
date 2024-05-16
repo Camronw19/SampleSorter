@@ -86,6 +86,7 @@ void FileListTable::initHeaders()
 {
     m_table.getHeader().addColumn("ID", 1, 90, 50, 400, juce::TableHeaderComponent::defaultFlags);
     m_table.getHeader().addColumn("Name", 2, 90, 50, 400, juce::TableHeaderComponent::defaultFlags);
+    m_table.getHeader().addColumn("Type", 3, 90, 50, 400, juce::TableHeaderComponent::defaultFlags); 
 }
 
 void FileListTable::loadData()
@@ -105,6 +106,8 @@ juce::String FileListTable::getAttributeNameForColumnId(const int column_id) con
         return "id";
     else if (column_id == 2)
         return "name";
+    else if (column_id == 3)
+        return "file_extension"; 
 
     return {};
 }

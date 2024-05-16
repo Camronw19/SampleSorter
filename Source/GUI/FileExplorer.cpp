@@ -14,14 +14,15 @@
 
 //==============================================================================
 FileExplorer::FileExplorer()
-    :m_file_list(m_sample_library.getState())
+    :m_file_list(m_sample_library)
 {
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 5; i++)
     {
         SampleInfoDataModel sample_model;
 
         juce::String id(sample_model.getId());
         sample_model.setName("Sample Info " + id); 
+        sample_model.setFileExtension(".wav"); 
         m_sample_library.AddSample(sample_model); 
     }
 

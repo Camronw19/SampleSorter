@@ -18,6 +18,8 @@ namespace ModelIdentifiers
     DECLARE_ID(SAMPLE_INFO)
     DECLARE_ID(id)
     DECLARE_ID(name)
+    DECLARE_ID(file_path)
+    DECLARE_ID(file_extension)
 }
 
 class SampleInfoDataModel
@@ -31,9 +33,13 @@ public:
     const juce::ValueTree getState() const; 
     int32_t getId() const; 
     juce::String getName() const; 
+    juce::String getFilePath() const; 
+    juce::String getFileExtension() const; 
 
     // Setters 
     void setName(const juce::String); 
+    void setFilePath(const juce::String); 
+    void setFileExtension(const juce::String); 
 
 private: 
     static int32_t m_instance_id; 
@@ -41,4 +47,6 @@ private:
     juce::ValueTree m_vt; 
     juce::CachedValue<int32_t> m_id; 
     juce::CachedValue<juce::String> m_name; 
+    juce::CachedValue<juce::String> m_file_path; 
+    juce::CachedValue<juce::String> m_file_extension; 
  };
