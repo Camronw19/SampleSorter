@@ -32,29 +32,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileListItem)
 };
 
-class FileList : public juce::Component,
-    public ValueTreeObjectList<FileListItem>
-{
-public:
-    FileList(juce::ValueTree);
-    ~FileList() override;
-
-    void paint(juce::Graphics&) override;
-    void resized() override;
-
-private:
-    SampleLibraryDataModel m_sample_library; 
-
-    // ValueTreeObjectList methods
-    bool isSuitableType(const juce::ValueTree&) const override;
-    FileListItem* createNewObject(const juce::ValueTree&) override;
-    void deleteObject(FileListItem*) override;
-    void newObjectAdded(FileListItem*) override;
-    void objectRemoved(FileListItem*) override;
-    void objectOrderChanged() override;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FileList)
-};
 
 class FileListTable : public juce::Component,
                       public juce::TableListBoxModel, 
@@ -62,7 +39,7 @@ class FileListTable : public juce::Component,
                       public AudioFileDragAndDropTarget
 {
 public:
-    FileListTable(juce::ValueTree);
+    FileListTable(const SampleLibraryDataModel&);
     ~FileListTable() override;
 
     void paint(juce::Graphics&) override;

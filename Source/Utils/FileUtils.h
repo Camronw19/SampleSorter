@@ -15,13 +15,15 @@
 class AudioFileDragAndDropTarget : public juce::FileDragAndDropTarget
 {
 public: 
-    explicit AudioFileDragAndDropTarget();
+    explicit AudioFileDragAndDropTarget(const SampleLibraryDataModel&);
 
 private:
     bool isInterestedInFileDrag(const juce::StringArray&);
     void filesDropped(const juce::StringArray&, int, int);
     virtual void fileDragEnter(const juce::StringArray&, int, int);
     virtual void fileDragExit(const juce::StringArray&); 
+
+    SampleLibraryDataModel m_sample_library; 
 };
 
 

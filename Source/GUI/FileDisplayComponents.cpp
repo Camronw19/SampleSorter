@@ -39,70 +39,10 @@ juce::ValueTree FileListItem::getState()
 }
 
 //==============================================================================
-FileList::FileList(juce::ValueTree sample_library)
-    : m_sample_library(sample_library), ValueTreeObjectList<FileListItem>(sample_library)
-{
-    rebuildObjects(); 
-}
 
-FileList::~FileList()
-{
-    freeObjects(); 
-}
-
-void FileList::paint(juce::Graphics&)
-{
-
-}
-
-void FileList::resized()
-{
-    auto bounds = getLocalBounds(); 
-    auto component_height = bounds.getHeight() / m_sample_library.getState().getNumChildren(); 
-
-    for (auto& object : m_objects)
-    {
-        object->setBounds(bounds.removeFromTop(component_height));
-    }
-}
-
-
-bool FileList::isSuitableType(const juce::ValueTree& sample_info) const
-{
-    return sample_info.hasType(ModelIdentifiers::SAMPLE_INFO);
-}
-
-FileListItem* FileList::createNewObject(const juce::ValueTree& vt)
-{
-    FileListItem* file_list_item = new FileListItem(vt); 
-    addAndMakeVisible(file_list_item); 
-    return file_list_item; 
-}
-
-void FileList::deleteObject(FileListItem* file_list_item)
-{
-    delete file_list_item; 
-}
-
-void FileList::newObjectAdded(FileListItem*)
-{
-    repaint();
-}
-
-void FileList::objectRemoved(FileListItem*)
-{
-    repaint();
-}
-
-void FileList::objectOrderChanged()
-{
-    repaint(); 
-}
-
-//==============================================================================
-
-FileListTable::FileListTable(juce::ValueTree vt)
-    :m_sample_library(vt),
+FileListTable::FileListTable(const SampleLibraryDataModel& sample_library)
+    :m_sample_library(sample_library),
+     AudioFileDragAndDropTarget(sample_library),
      m_table("FileListTable", this), 
      m_num_rows(0), 
      m_font(14.0f) 
@@ -199,7 +139,9 @@ void FileListTable::paintCell(juce::Graphics& g, int row_number,
 void FileListTable::SampleAdded(const SampleInfoDataModel& addedSample)
 {
     loadData(); 
+    m_table.updateContent();
     m_table.autoSizeAllColumns();
+    m_table.repaint(); 
 }
 
 int FileListTable::getColumnAutoSizeWidth(int columnId)

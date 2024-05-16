@@ -10,8 +10,10 @@
 
 #include "FileUtils.h"
 #include "UIConfig.h"
+#include "SampleInfo.h"
 
-AudioFileDragAndDropTarget::AudioFileDragAndDropTarget()
+AudioFileDragAndDropTarget::AudioFileDragAndDropTarget(const SampleLibraryDataModel& sample_library)
+    :m_sample_library(sample_library)
 {
 
 }
@@ -35,9 +37,16 @@ bool AudioFileDragAndDropTarget::isInterestedInFileDrag(const juce::StringArray&
 
 void AudioFileDragAndDropTarget::filesDropped(const juce::StringArray& files, int x , int y)
 {
-    if (isInterestedInFileDrag(files))
+    for (auto filePath : files)
     {
-        DBG("FILES DROPPED"); 
+        if (isInterestedInFileDrag(filePath))
+        {
+            const juce::File file(filePath); 
+            SampleInfoDataModel sample_info;
+            sample_info.setName(file.getFileNameWithoutExtension());
+
+            m_sample_library.AddSample(sample_info); 
+        }
     }
 
     fileDragExit(files); 
@@ -50,7 +59,7 @@ void AudioFileDragAndDropTarget::fileDragEnter(const juce::StringArray& files, i
 
 void AudioFileDragAndDropTarget::fileDragExit(const juce::StringArray& files)
 {
-    DBG("FILE EXIT MAIN"); 
+
 }
 
 //==============================================================================
