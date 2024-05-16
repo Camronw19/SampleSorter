@@ -96,14 +96,14 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\Utils;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\JuceLibraryCode;C:\Users\camro\Documents\Development\Frameworks\JUCE\modules;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\UnitTest1;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\DataModels;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\GUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\Utils;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\JuceLibraryCode;C:\Users\camro\Documents\Development\Frameworks\JUCE\modules;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\UnitTest1;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\DataModels;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Source\GUI;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\UnitTest1\GUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\JuceLibraryCode;$(VCInstallDir)UnitTest\lib;C:\Users\camro\Documents\Development\JUCE Projects\SampleSorter\SampleSorter\Builds\VisualStudio2022\x64\Debug\App;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FileUtils.obj;SampleInfo.obj;SampleLibrary.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FileUtils.obj;SampleInfo.obj;SampleLibrary.obj;FileDisplayComponents.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -175,6 +175,7 @@
     <ClCompile Include="..\JuceLibraryCode\include_juce_gui_extra.cpp" />
     <ClCompile Include="DataModels\SampleInfoTests.cpp" />
     <ClCompile Include="DataModels\SampleLibraryTests.cpp" />
+    <ClCompile Include="GUI\FileListTableTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

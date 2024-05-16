@@ -22,6 +22,9 @@
     <Filter Include="Source Files\DataModels">
       <UniqueIdentifier>{718d2174-0cf9-46ef-ac0e-fdb2af7f6fea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{db4e0e67-f907-4ed0-9a2e-4929f1aabd52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -74,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="DataModels\SampleInfoTests.cpp">
       <Filter>Source Files\DataModels</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\FileListTableTests.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
