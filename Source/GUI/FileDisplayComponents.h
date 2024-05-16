@@ -51,6 +51,7 @@ private:
     int getColumnAutoSizeWidth(int) override; 
     void paintCell(juce::Graphics&, int, int, int, int, bool) override;
     void paintRowBackground(juce::Graphics&, int, int, int, bool) override;
+    void sortOrderChanged(int, bool) override; 
     void loadData(); 
     void initTable();
     void initHeaders();

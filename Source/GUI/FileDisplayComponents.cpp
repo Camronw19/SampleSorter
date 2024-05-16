@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "FileDisplayComponents.h"
 #include "UIConfig.h"
+#include "DataSorting.h"
 
 //==============================================================================
 FileListItem::FileListItem(juce::ValueTree sample_info)
@@ -136,6 +137,18 @@ void FileListTable::paintCell(juce::Graphics& g, int row_number,
         auto& text = rowElement->getStringAttribute(getAttributeNameForColumnId(column_id));
 
         g.drawText(text, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
+    }
+}
+
+
+void FileListTable::sortOrderChanged(int new_sort_col_id, bool forwards)
+{
+    if (new_sort_col_id != 0)
+    {
+        CompareNaturalStringSorter sorter(getAttributeNameForColumnId(new_sort_col_id), "id", forwards);
+        m_data_list->sortChildElements(sorter); 
+        
+        m_table.updateContent(); 
     }
 }
 
