@@ -16,26 +16,26 @@
 #include "ValueTreeObjectList.h"
 #include "FileUtils.h"
 
-class FileListItem  : public juce::Component
+class SampleLibraryView : public juce::Component, 
+                          public SampleLibraryDataModel::Listener
 {
 public:
-    FileListItem(juce::ValueTree);
-    ~FileListItem() override;
+    virtual ~SampleLibraryView(); 
+    SampleLibraryView(const SampleLibraryDataModel&); 
 
-    void paint (juce::Graphics&) override;
-    void resized() override;
+    void paint(juce::Graphics&) override; 
+    void resized() override; 
 
-    juce::ValueTree getState(); 
+protected: 
+    SampleLibraryDataModel m_sample_library;
 
-private:
-    SampleInfoDataModel m_sample_info; 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileListItem)
+private: 
+    virtual void SampleAdded(const SampleInfoDataModel&) = 0; 
+
 };
 
-
-class FileListTable : public juce::Component,
+class FileListTable : public SampleLibraryView,
                       public juce::TableListBoxModel, 
-                      public SampleLibraryDataModel::Listener, 
                       public AudioFileDragAndDropTarget
 {
 public:
@@ -65,7 +65,6 @@ private:
     void SampleAdded(const SampleInfoDataModel&) override; 
 
     // Data models
-    SampleLibraryDataModel m_sample_library;
     std::unique_ptr<juce::XmlElement> m_data_list;
     int m_num_rows;
 

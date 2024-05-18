@@ -13,43 +13,29 @@
 #include "UIConfig.h"
 #include "DataSorting.h"
 
-//==============================================================================
-FileListItem::FileListItem(juce::ValueTree sample_info)
-    :m_sample_info(sample_info)
+SampleLibraryView::SampleLibraryView(const SampleLibraryDataModel& sample_library)
+    :m_sample_library(sample_library)
 {
-    
+    m_sample_library.addListener(*this); 
 }
 
-FileListItem::~FileListItem()
+SampleLibraryView::~SampleLibraryView()
 {
+    m_sample_library.removeListener(*this); 
 }
 
-void FileListItem::paint (juce::Graphics& g)
-{
-
-}
-
-void FileListItem::resized()
-{
-
-}
-
-juce::ValueTree FileListItem::getState()
-{
-    return m_sample_info.getState(); 
-}
+void SampleLibraryView::paint(juce::Graphics&) {}
+void SampleLibraryView::resized() {}
 
 //==============================================================================
 
 FileListTable::FileListTable(const SampleLibraryDataModel& sample_library)
-    :m_sample_library(sample_library),
+    :SampleLibraryView(sample_library),
      AudioFileDragAndDropTarget(sample_library),
      m_table("FileListTable", this), 
      m_num_rows(0), 
      m_font(14.0f) 
 {
-    m_sample_library.addListener(*this); 
-
     addAndMakeVisible(m_add_file_overlay); 
 
     initTable(); 
@@ -59,7 +45,6 @@ FileListTable::FileListTable(const SampleLibraryDataModel& sample_library)
 
 FileListTable::~FileListTable()
 {
-    m_sample_library.removeListener(*this); 
 }
 
 void FileListTable::paint(juce::Graphics& g)
@@ -92,7 +77,7 @@ void FileListTable::initHeaders()
 
 void FileListTable::loadData()
 {
-    m_data_list = m_sample_library.getState().createXml(); 
+    m_data_list = SampleLibraryView::m_sample_library.getState().createXml(); 
     m_num_rows = m_data_list->getNumChildElements();
 }
 
