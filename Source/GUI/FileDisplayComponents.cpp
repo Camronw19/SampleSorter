@@ -89,11 +89,11 @@ int FileListTable::getNumRows()
 juce::String FileListTable::getAttributeNameForColumnId(const int column_id) const
 {
     if (column_id == 1)
-        return "id";
+        return ModelIdentifiers::id.toString();
     else if (column_id == 2)
-        return "name";
+        return ModelIdentifiers::name.toString();
     else if (column_id == 3)
-        return "file_extension"; 
+        return ModelIdentifiers::file_extension.toString(); 
 
     return {};
 }
@@ -137,7 +137,15 @@ void FileListTable::sortOrderChanged(int new_sort_col_id, bool forwards)
     }
 }
 
-void FileListTable::SampleAdded(const SampleInfoDataModel& addedSample)
+
+void FileListTable::selectedRowsChanged(int row)
+{
+    juce::XmlElement* selected_xml_element = m_data_list->getChildElement(row); 
+    int selected_file_id = selected_xml_element->getIntAttribute("id"); 
+    SampleLibraryView::m_sample_library.setActiveFile(selected_file_id); 
+}
+
+void FileListTable::sampleAdded(const SampleInfoDataModel& addedSample)
 {
     loadData(); 
     m_table.updateContent();
@@ -176,3 +184,4 @@ void FileListTable::fileDragExit(const juce::StringArray&)
 
     repaint(); 
 }
+
