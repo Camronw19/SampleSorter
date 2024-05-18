@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "FileExplorer.h"
+#include "WaveformDisplay.h"
 #include "UIConfig.h"
 
 //==============================================================================
@@ -27,7 +28,11 @@ public:
 
 private:
     //==============================================================================
-    FileExplorer m_file_explorer; 
+    SampleLibraryDataModel m_sample_library;
+
+    FileExplorer m_file_explorer;
+    VTWaveformDisplay m_waveform_display; 
+    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

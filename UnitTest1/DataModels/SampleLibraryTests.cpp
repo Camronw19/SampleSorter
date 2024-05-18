@@ -61,5 +61,21 @@ namespace UnitTest1
 
 			Assert::AreEqual(name.toStdString(), sample_library.getName().toStdString());
 		}
+
+		TEST_METHOD(AddSample)
+		{
+			SampleLibraryDataModel sample_library; 
+
+			for (int i = 1; i < 5; i++)
+			{
+				SampleInfoDataModel sample_model;
+
+				juce::String id(sample_model.getId());
+				sample_model.setName("Sample Info " + id);
+				sample_library.AddSample(sample_model);
+
+				Assert::IsTrue(sample_library.getState().getNumChildren() == i); 
+			}
+		}
 	};
 }

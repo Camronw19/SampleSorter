@@ -18,20 +18,19 @@ namespace ModelIdentifiers
     DECLARE_ID(active_file)
 }
 
-class SampleLibraryDataModel : public juce::ValueTree::Listener
+class SampleLibraryDataModel : private juce::ValueTree::Listener
 {
 public: 
     class Listener
     {
     public:
         virtual ~Listener() noexcept = default;
-        virtual void SampleAdded(const SampleInfoDataModel&) {};
+        virtual void sampleAdded(const SampleInfoDataModel&) {};
         virtual void activeFileChanged(const SampleInfoDataModel&) {}; 
     };
 
     explicit SampleLibraryDataModel(); 
     ~SampleLibraryDataModel(); 
-    SampleLibraryDataModel(const juce::ValueTree&); 
     SampleLibraryDataModel(const SampleLibraryDataModel&);
 
     void AddSample(const SampleInfoDataModel&);
@@ -43,16 +42,18 @@ public:
 
     // Setters
     void setName(const juce::String); 
-    void setActiveFile(const SampleInfoDataModel&); 
+    void setActiveFile(const int); 
 
     void addListener(Listener&);
     void removeListener(Listener&);
 
 private: 
+    SampleLibraryDataModel(const juce::ValueTree&); 
     virtual void valueTreeChildAdded(juce::ValueTree&, juce::ValueTree&) override; 
+    virtual void valueTreePropertyChanged(juce::ValueTree&, const juce::Identifier&) override; 
 
     juce::ValueTree m_vt;
-    juce::ValueTree m_active_file; 
+    juce::CachedValue<int> m_active_file; 
     juce::CachedValue<juce::String> m_name; 
 
     juce::ListenerList<Listener> m_listener_list; 

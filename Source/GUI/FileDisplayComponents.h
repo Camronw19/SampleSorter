@@ -30,7 +30,7 @@ protected:
     SampleLibraryDataModel m_sample_library;
 
 private: 
-    virtual void SampleAdded(const SampleInfoDataModel&) = 0; 
+    virtual void sampleAdded(const SampleInfoDataModel&) = 0; 
 
 };
 
@@ -52,6 +52,7 @@ private:
     void paintCell(juce::Graphics&, int, int, int, int, bool) override;
     void paintRowBackground(juce::Graphics&, int, int, int, bool) override;
     void sortOrderChanged(int, bool) override; 
+    void selectedRowsChanged(int) override;
     void loadData(); 
     void initTable();
     void initHeaders();
@@ -62,7 +63,7 @@ private:
     void fileDragExit(const juce::StringArray&) override; 
 
     // Data model methods
-    void SampleAdded(const SampleInfoDataModel&) override; 
+    void sampleAdded(const SampleInfoDataModel&) override; 
 
     // Data models
     std::unique_ptr<juce::XmlElement> m_data_list;

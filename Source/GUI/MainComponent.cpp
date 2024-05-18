@@ -2,8 +2,11 @@
 
 //==============================================================================
 MainComponent::MainComponent()
+    :m_file_explorer(m_sample_library), 
+     m_waveform_display(m_sample_library)
 { 
     addAndMakeVisible(m_file_explorer);
+    addAndMakeVisible(m_waveform_display); 
 
     setSize (800, 600);
 
@@ -16,6 +19,17 @@ MainComponent::MainComponent()
     else
     {
         setAudioChannels (2, 2);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        SampleInfoDataModel sample_model;
+
+        juce::String id(sample_model.getId());
+        sample_model.setName("Sample Info " + id); 
+        sample_model.setFileExtension(".wav"); 
+        DBG("ADDING FILE"); 
+        m_sample_library.AddSample(sample_model); 
     }
 }
 
@@ -51,6 +65,10 @@ void MainComponent::paint (juce::Graphics& g)
 
 void MainComponent::resized()
 {
-    auto bounds = getLocalBounds(); 
+    auto bounds = getLocalBounds().reduced(spacing::padding2); 
     m_file_explorer.setBounds(bounds.removeFromTop(getHeight() / 1.5)); 
+
+    bounds.removeFromTop(spacing::padding2);
+
+    m_waveform_display.setBounds(bounds); 
 }

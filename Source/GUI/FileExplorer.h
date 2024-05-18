@@ -20,14 +20,13 @@
 class FileExplorer  : public juce::Component
 {
 public:
-    FileExplorer();
+    FileExplorer(const SampleLibraryDataModel&);
     ~FileExplorer() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
-    SampleLibraryDataModel m_sample_library;
     FileListTable m_file_list;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileExplorer)
