@@ -31,5 +31,5 @@ void FileExplorer::paint (juce::Graphics& g)
 void FileExplorer::resized()
 {
     auto bounds = getLocalBounds(); 
-    m_file_list.setBounds(bounds.reduced(spacing::padding2)); 
+    m_file_list.setBounds(bounds); 
 }

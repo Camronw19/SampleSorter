@@ -65,10 +65,10 @@ void MainComponent::paint (juce::Graphics& g)
 
 void MainComponent::resized()
 {
-    auto bounds = getLocalBounds(); 
+    auto bounds = getLocalBounds().reduced(spacing::padding2); 
     m_file_explorer.setBounds(bounds.removeFromTop(getHeight() / 1.5)); 
 
-    bounds.removeFromTop(spacing::padding4);
+    bounds.removeFromTop(spacing::padding2);
 
     m_waveform_display.setBounds(bounds); 
 }

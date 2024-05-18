@@ -28,9 +28,11 @@ WaveformDisplay::~WaveformDisplay()
 void WaveformDisplay::paint (juce::Graphics& g)
 {
 
-    juce::Rectangle<int> thumbnail_bounds = getLocalBounds(); 
+    juce::Rectangle<int> bounds = getLocalBounds(); 
     g.setColour(getLookAndFeel().findColour(AppColors::Surface1dp));
-    g.fillAll(); 
+    g.fillRoundedRectangle(bounds.toFloat(), rounding::rounding1);
+
+    juce::Rectangle<int> thumbnail_bounds = bounds.reduced(0, spacing::padding1); 
 
     if (m_thumbnail.getNumChannels() == 0)
         paintIfNoFileLoaded(g, thumbnail_bounds);
