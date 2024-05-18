@@ -66,6 +66,15 @@ const juce::ValueTree SampleLibraryDataModel::getState() const
     return m_vt; 
 }
 
+SampleInfoDataModel SampleLibraryDataModel::getActiveFile() const
+{
+    if (m_active_file.isValid())
+    {
+        return SampleInfoDataModel(m_active_file); 
+    }
+
+    return SampleInfoDataModel(); 
+}
 
 juce::String SampleLibraryDataModel::getName() const
 {
@@ -77,4 +86,15 @@ juce::String SampleLibraryDataModel::getName() const
 void SampleLibraryDataModel::setName(const juce::String new_name)
 {
     m_name.setValue(new_name, nullptr);
+}
+
+void SampleLibraryDataModel::setActiveFile(const SampleInfoDataModel& sample_info)
+{
+    if (sample_info.getState().isValid())
+        m_active_file = sample_info.getState();
+    else
+        m_active_file = juce::ValueTree(); 
+
+
+    m_listener_list.call([&](Listener& l) { l.activeFileChanged(SampleInfoDataModel(m_active_file)); });
 }
