@@ -28,7 +28,7 @@ bool AudioFileDragAndDropTarget::isInterestedInFileDrag(const juce::StringArray&
     juce::AlertWindow::showMessageBoxAsync(
         juce::AlertWindow::WarningIcon,
         "Invalid File Format",
-        "Please drag and drop only WAV, MP3, or AIF files.",
+        "WAV, MP3, and AIF files only.",
         "OK"
     );
 
@@ -42,8 +42,11 @@ void AudioFileDragAndDropTarget::filesDropped(const juce::StringArray& files, in
         if (isInterestedInFileDrag(filePath))
         {
             const juce::File file(filePath); 
+
             SampleInfoDataModel sample_info;
             sample_info.setName(file.getFileNameWithoutExtension());
+            sample_info.setFilePath(file.getFullPathName()); 
+            sample_info.setFileExtension(file.getFileExtension()); 
 
             m_sample_library.AddSample(sample_info); 
         }
