@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SampleLibrary.h"
 
 //==============================================================================
 /*
@@ -39,4 +40,21 @@ private:
     juce::AudioThumbnail m_thumbnail; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveformDisplay)
+};
+
+class VTWaveformDisplay : public WaveformDisplay,
+                          public SampleLibraryDataModel::Listener
+{
+public: 
+    explicit VTWaveformDisplay(const SampleLibraryDataModel&); 
+    ~VTWaveformDisplay(); 
+
+private:
+
+    void activeFileChanged(const SampleInfoDataModel&) override; 
+
+    SampleLibraryDataModel m_sample_library; 
+
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VTWaveformDisplay)
 };

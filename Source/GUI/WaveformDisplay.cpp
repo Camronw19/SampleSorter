@@ -29,6 +29,8 @@ void WaveformDisplay::paint (juce::Graphics& g)
 {
 
     juce::Rectangle<int> thumbnail_bounds = getLocalBounds(); 
+    g.setColour(getLookAndFeel().findColour(AppColors::Surface1dp));
+    g.fillAll(); 
 
     if (m_thumbnail.getNumChannels() == 0)
         paintIfNoFileLoaded(g, thumbnail_bounds);
@@ -69,4 +71,24 @@ void WaveformDisplay::paintIfFileLoaded(juce::Graphics& g, juce::Rectangle<int>&
     m_thumbnail.drawChannels(g, thumbnail_bounds, 0.0, m_thumbnail.getTotalLength(), 1.0f);
 }
 
+//==============================================================================
 
+VTWaveformDisplay::VTWaveformDisplay(const SampleLibraryDataModel& sample_library)
+    :m_sample_library(sample_library)
+{
+    m_sample_library.addListener(*this); 
+}
+
+VTWaveformDisplay::~VTWaveformDisplay()
+{
+    m_sample_library.removeListener(*this); 
+}
+
+void VTWaveformDisplay::activeFileChanged(const SampleInfoDataModel& sample_info)
+{
+        juce::File file(sample_info.getFilePath()); 
+        if (file.exists())
+            setThumbnailSource(file);
+        else
+            setThumbnailSource(juce::File()); 
+}
