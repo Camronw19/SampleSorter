@@ -91,3 +91,54 @@ void AddFileOverlay::resized()
 
 }
 
+//==============================================================================
+AudioFileChooser::AudioFileChooser(const SampleLibraryDataModel& sample_library)
+    :m_sample_library(sample_library), 
+     m_file_choooser("FileChooser", juce::File(), m_audio_file_patterns)
+{
+    m_file_chooser_flags = juce::FileBrowserComponent::canSelectFiles |
+                      juce::FileBrowserComponent::canSelectDirectories |
+                      juce::FileBrowserComponent::canSelectMultipleItems |
+                      juce::FileBrowserComponent::openMode; 
+
+}
+
+void AudioFileChooser::browseMultipleFiles()
+{
+    m_file_choooser.launchAsync(m_file_chooser_flags, [this](const juce::FileChooser& chooser)
+        {
+            auto results = chooser.getResults(); 
+
+            for (const auto& file : results)
+            {
+                if (file.isDirectory())
+                    addFilesFromDirectory(file);
+                else
+                    addFile(file); 
+            }
+        });
+}
+
+void AudioFileChooser::addFile(const juce::File& file)
+{
+      SampleInfoDataModel sample_info;
+      sample_info.setName(file.getFileNameWithoutExtension());
+      sample_info.setFilePath(file.getFullPathName()); 
+      sample_info.setFileExtension(file.getFileExtension()); 
+
+      m_sample_library.AddSample(sample_info); 
+}
+
+void AudioFileChooser::addFilesFromDirectory(const juce::File& file)
+{
+    DBG("SEARCHING SINGLE DIR"); 
+    int what_to_look_for = juce::File::findFiles;     
+    bool search_recursively = true; 
+
+    juce::Array<juce::File> files = file.findChildFiles(what_to_look_for, search_recursively, m_audio_file_patterns); 
+    for (const auto& file : files)
+    {
+        addFile(file); 
+    }
+}
+

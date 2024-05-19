@@ -21,6 +21,10 @@
             file="Source/Utils/ValueTreeObjectList.h"/>
     </GROUP>
     <GROUP id="{70DC7FB3-55D8-769D-2605-061BF484BC22}" name="GUI">
+      <FILE id="X62HSB" name="AddFilesComponent.cpp" compile="1" resource="0"
+            file="Source/GUI/AddFilesComponent.cpp"/>
+      <FILE id="VQS8LE" name="AddFilesComponent.h" compile="0" resource="0"
+            file="Source/GUI/AddFilesComponent.h"/>
       <FILE id="lVyHuv" name="FileDisplayComponents.cpp" compile="1" resource="0"
             file="Source/GUI/FileDisplayComponents.cpp"/>
       <FILE id="qhD03V" name="FileDisplayComponents.h" compile="0" resource="0"

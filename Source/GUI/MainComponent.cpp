@@ -3,9 +3,11 @@
 //==============================================================================
 MainComponent::MainComponent()
     :m_file_explorer(m_sample_library), 
-     m_waveform_display(m_sample_library)
+     m_waveform_display(m_sample_library), 
+     m_add_files(m_sample_library)
 { 
     addAndMakeVisible(m_file_explorer);
+    addAndMakeVisible(m_add_files);
     addAndMakeVisible(m_waveform_display); 
 
     setSize (800, 600);
@@ -66,8 +68,11 @@ void MainComponent::paint (juce::Graphics& g)
 void MainComponent::resized()
 {
     auto bounds = getLocalBounds().reduced(spacing::padding2); 
-    m_file_explorer.setBounds(bounds.removeFromTop(getHeight() / 1.5)); 
 
+    m_add_files.setBounds(bounds.removeFromTop(40).removeFromLeft(getWidth() / 6));
+    bounds.removeFromTop(spacing::padding2);
+
+    m_file_explorer.setBounds(bounds.removeFromTop(getHeight() / 1.5)); 
     bounds.removeFromTop(spacing::padding2);
 
     m_waveform_display.setBounds(bounds); 

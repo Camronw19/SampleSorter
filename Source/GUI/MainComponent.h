@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "FileExplorer.h"
 #include "WaveformDisplay.h"
+#include "AddFilesComponent.h"
 #include "UIConfig.h"
 
 //==============================================================================
@@ -31,6 +32,7 @@ private:
     SampleLibraryDataModel m_sample_library;
 
     FileExplorer m_file_explorer;
+    AddFilesComponent m_add_files;
     VTWaveformDisplay m_waveform_display; 
     
 
