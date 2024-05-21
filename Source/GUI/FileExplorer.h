@@ -13,11 +13,13 @@
 #include <JuceHeader.h>
 #include "SampleLibrary.h"
 #include "FileDisplayComponents.h"
+#include "SearchBar.h"
 
 //==============================================================================
 /*
 */
-class FileExplorer  : public juce::Component
+class FileExplorer  : public juce::Component,
+                      juce::TextEditor::Listener
 {
 public:
     FileExplorer(const SampleLibraryDataModel&);
@@ -28,6 +30,7 @@ public:
 
 private:
     FileListTable m_file_list;
+    SearchBar m_search_bar; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileExplorer)
 };
