@@ -17,17 +17,17 @@
 //==============================================================================
 /*
 */
-class AddFilesComponent  : public juce::Button, 
-                           public AudioFileChooser
+class AddFilesButton  : public juce::Button, 
+                        public AudioFileChooser
 {
 public:
-    explicit AddFilesComponent(const SampleLibraryDataModel&);
-    ~AddFilesComponent() override;
+    explicit AddFilesButton(const SampleLibraryDataModel&);
+    ~AddFilesButton() override;
 
     void paintButton(juce::Graphics&, bool, bool) override;
 
 private:
     void clicked() override; 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AddFilesComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AddFilesButton)
 };

@@ -9,22 +9,22 @@
 */
 
 #include <JuceHeader.h>
-#include "AddFilesComponent.h"
+#include "AddFiles.h"
 #include "UIConfig.h"
 
 //==============================================================================
-AddFilesComponent::AddFilesComponent(const SampleLibraryDataModel& sample_library)
+AddFilesButton::AddFilesButton(const SampleLibraryDataModel& sample_library)
     :AudioFileChooser(sample_library), 
     juce::Button("AddFilesButton")
 {
     setClickingTogglesState(false); 
 }
 
-AddFilesComponent::~AddFilesComponent()
+AddFilesButton::~AddFilesButton()
 {
 }
 
-void AddFilesComponent::paintButton (juce::Graphics& g, bool isMouseOverButton, bool isButtonDown)
+void AddFilesButton::paintButton (juce::Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
     juce::Rectangle<int> bounds = getLocalBounds(); 
 
@@ -47,8 +47,7 @@ void AddFilesComponent::paintButton (juce::Graphics& g, bool isMouseOverButton, 
     g.fillRect(center_x - height / 2, center_y - width / 2, height, width);
 }
 
-void AddFilesComponent::clicked()
+void AddFilesButton::clicked()
 {
-    DBG("BUTTON CLICKED"); 
     browseMultipleFiles(); 
 }
