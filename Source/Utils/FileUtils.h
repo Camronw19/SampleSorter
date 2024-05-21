@@ -41,28 +41,6 @@ private:
 
 };
 
-template<typename Function>
-inline auto callOnMessageThread(Function&& function)
-{
-    using R = decltype(function());
-    struct Trampoline
-    {
-        static void* call(void* trampP)
-        {
-            auto tramp = static_cast <Trampoline*> (trampP);
-            tramp->retVal = tramp->func();
-            return nullptr;
-        }
-
-        Function& func;
-        R       retVal;
-    };
-    Trampoline tramp{ function, R{} };
-
-    juce::MessageManager::getInstance()->callFunctionOnMessageThread(Trampoline::call, &tramp);
-    return tramp.retVal;
-}
-
 class AudioFileChooser
 {
 public: 

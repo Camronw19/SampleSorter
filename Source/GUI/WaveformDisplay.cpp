@@ -23,16 +23,17 @@ WaveformDisplay::WaveformDisplay()
 
 WaveformDisplay::~WaveformDisplay()
 {
+    m_thumbnail.removeChangeListener(this); 
 }
 
 void WaveformDisplay::paint (juce::Graphics& g)
 {
 
     juce::Rectangle<int> bounds = getLocalBounds(); 
+    juce::Rectangle<int> thumbnail_bounds = bounds.reduced(0, spacing::padding1); 
+
     g.setColour(getLookAndFeel().findColour(AppColors::Surface1dp));
     g.fillRoundedRectangle(bounds.toFloat(), rounding::rounding1);
-
-    juce::Rectangle<int> thumbnail_bounds = bounds.reduced(0, spacing::padding1); 
 
     if (m_thumbnail.getNumChannels() == 0)
         paintIfNoFileLoaded(g, thumbnail_bounds);
@@ -89,6 +90,7 @@ VTWaveformDisplay::~VTWaveformDisplay()
 void VTWaveformDisplay::activeFileChanged(const SampleInfoDataModel& sample_info)
 {
         juce::File file(sample_info.getFilePath()); 
+
         if (file.exists())
             setThumbnailSource(file);
         else

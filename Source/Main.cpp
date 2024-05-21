@@ -100,6 +100,7 @@ public:
 
 private:
     DarkLookAndFeel m_dark_lnf; 
+    LightLookAndFeel m_light_lnf; 
     std::unique_ptr<MainWindow> mainWindow;
 };
 

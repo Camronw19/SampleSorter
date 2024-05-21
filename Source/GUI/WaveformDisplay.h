@@ -50,11 +50,9 @@ public:
     ~VTWaveformDisplay(); 
 
 private:
-
     void activeFileChanged(const SampleInfoDataModel&) override; 
 
     SampleLibraryDataModel m_sample_library; 
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VTWaveformDisplay)
 };

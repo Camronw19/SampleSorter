@@ -3,7 +3,7 @@
 
     FileDisplayComponents.cpp
     Created: 13 May 2024 5:32:35pm
-    Author:  camro
+    Author:  Camron
 
   ==============================================================================
 */
@@ -34,12 +34,12 @@ FileListTable::FileListTable(const SampleLibraryDataModel& sample_library)
      AudioFileDragAndDropTarget(sample_library),
      m_table("FileListTable", this), 
      m_num_rows(0), 
-     m_font(14.0f) 
+     m_font(fonts::base) 
 {
     addAndMakeVisible(m_add_file_overlay); 
 
     initTable(); 
-    initHeaders(); 
+    initTableHeaders(); 
     loadData(); 
 }
 
@@ -68,7 +68,7 @@ void FileListTable::initTable()
     m_table.setMultipleSelectionEnabled(false); 
 }
 
-void FileListTable::initHeaders()
+void FileListTable::initTableHeaders()
 {
     m_table.getHeader().addColumn("ID", 1, 90, 50, 400, juce::TableHeaderComponent::defaultFlags);
     m_table.getHeader().addColumn("Name", 2, 90, 50, 400, juce::TableHeaderComponent::defaultFlags);
@@ -77,8 +77,8 @@ void FileListTable::initHeaders()
 
 void FileListTable::loadData()
 {
-    m_data_list = SampleLibraryView::m_sample_library.getState().createXml(); 
-    m_num_rows = m_data_list->getNumChildElements();
+    m_sample_library_xml = SampleLibraryView::m_sample_library.getState().createXml(); 
+    m_num_rows = m_sample_library_xml->getNumChildElements();
 }
 
 int FileListTable::getNumRows()
@@ -101,14 +101,8 @@ juce::String FileListTable::getAttributeNameForColumnId(const int column_id) con
 void FileListTable::paintRowBackground(juce::Graphics& g, int row_number, 
     int width, int height, bool row_is_selected)
 {
-    juce::Colour alternate_colour = getLookAndFeel().findColour(AppColors::Surface1dp);
-
     if (row_is_selected)
-    {
         g.fillAll(getLookAndFeel().findColour(AppColors::PrimaryFocused));
-        g.setColour(getLookAndFeel().findColour(AppColors::Primary));  
-    }
-
 }
 
 void FileListTable::paintCell(juce::Graphics& g, int row_number, 
@@ -117,10 +111,9 @@ void FileListTable::paintCell(juce::Graphics& g, int row_number,
     g.setColour(row_is_selected ? getLookAndFeel().findColour(AppColors::Primary) : getLookAndFeel().findColour(AppColors::OnBackground));
     g.setFont(m_font);
 
-    if (auto* rowElement = m_data_list->getChildElement(row_number))
+    if (auto* row_element = m_sample_library_xml->getChildElement(row_number))
     {
-        auto& text = rowElement->getStringAttribute(getAttributeNameForColumnId(column_id));
-
+        auto& text = row_element->getStringAttribute(getAttributeNameForColumnId(column_id));
         g.drawText(text, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 }
@@ -131,8 +124,7 @@ void FileListTable::sortOrderChanged(int new_sort_col_id, bool forwards)
     if (new_sort_col_id != 0)
     {
         CompareNaturalStringSorter sorter(getAttributeNameForColumnId(new_sort_col_id), "id", forwards);
-        m_data_list->sortChildElements(sorter); 
-        
+        m_sample_library_xml->sortChildElements(sorter); 
         m_table.updateContent(); 
     }
 }
@@ -140,7 +132,7 @@ void FileListTable::sortOrderChanged(int new_sort_col_id, bool forwards)
 
 void FileListTable::selectedRowsChanged(int row)
 {
-    juce::XmlElement* selected_xml_element = m_data_list->getChildElement(row); 
+    juce::XmlElement* selected_xml_element = m_sample_library_xml->getChildElement(row); 
     int selected_file_id = selected_xml_element->getIntAttribute("id"); 
     SampleLibraryView::m_sample_library.setActiveFile(selected_file_id); 
 }
@@ -159,10 +151,9 @@ int FileListTable::getColumnAutoSizeWidth(int columnId)
 
     for (auto i = getNumRows(); --i >= 0;)
     {
-        if (auto* rowElement = m_data_list->getChildElement(i))
+        if (auto* row_element = m_sample_library_xml->getChildElement(i))
         {
-            auto& text = rowElement->getStringAttribute(getAttributeNameForColumnId(columnId));
-
+            auto& text = row_element->getStringAttribute(getAttributeNameForColumnId(columnId));
             widest = juce::jmax(widest, m_font.getStringWidth(text));
         }
     }
@@ -181,7 +172,6 @@ void FileListTable::fileDragExit(const juce::StringArray&)
 {
     juce::ComponentAnimator& animator = juce::Desktop::getInstance().getAnimator(); 
     animator.fadeOut(&m_add_file_overlay, 200); 
-
     repaint(); 
 }
 

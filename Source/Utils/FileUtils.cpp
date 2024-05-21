@@ -100,7 +100,6 @@ AudioFileChooser::AudioFileChooser(const SampleLibraryDataModel& sample_library)
                       juce::FileBrowserComponent::canSelectDirectories |
                       juce::FileBrowserComponent::canSelectMultipleItems |
                       juce::FileBrowserComponent::openMode; 
-
 }
 
 void AudioFileChooser::browseMultipleFiles()
@@ -131,14 +130,12 @@ void AudioFileChooser::addFile(const juce::File& file)
 
 void AudioFileChooser::addFilesFromDirectory(const juce::File& file)
 {
-    DBG("SEARCHING SINGLE DIR"); 
     int what_to_look_for = juce::File::findFiles;     
-    bool search_recursively = true; 
+    bool search_recursively = false; 
 
     juce::Array<juce::File> files = file.findChildFiles(what_to_look_for, search_recursively, m_audio_file_patterns); 
+
     for (const auto& file : files)
-    {
         addFile(file); 
-    }
 }
 

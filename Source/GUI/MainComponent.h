@@ -3,7 +3,7 @@
 #include <JuceHeader.h>
 #include "FileExplorer.h"
 #include "WaveformDisplay.h"
-#include "AddFilesComponent.h"
+#include "AddFiles.h"
 #include "UIConfig.h"
 
 //==============================================================================
@@ -32,9 +32,8 @@ private:
     SampleLibraryDataModel m_sample_library;
 
     FileExplorer m_file_explorer;
-    AddFilesComponent m_add_files;
+    AddFilesButton m_add_files;
     VTWaveformDisplay m_waveform_display; 
-    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

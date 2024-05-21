@@ -55,18 +55,16 @@ private:
     void selectedRowsChanged(int) override;
     void loadData(); 
     void initTable();
-    void initHeaders();
+    void initTableHeaders();
     juce::String getAttributeNameForColumnId(const int) const;
 
     // File dnd methods
     void fileDragEnter(const juce::StringArray&, int, int) override;
     void fileDragExit(const juce::StringArray&) override; 
 
-    // Data model methods
     void sampleAdded(const SampleInfoDataModel&) override; 
 
-    // Data models
-    std::unique_ptr<juce::XmlElement> m_data_list;
+    std::unique_ptr<juce::XmlElement> m_sample_library_xml;
     int m_num_rows;
 
     // Components
