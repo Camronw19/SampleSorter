@@ -27,6 +27,11 @@ namespace rounding
     static const int rounding4 = 20;
 }
 
+namespace fonts
+{
+    static const float base = 14.0f; 
+}
+
 namespace AppColors
 {
     namespace Dark
@@ -45,6 +50,24 @@ namespace AppColors
         static const juce::Colour OnError           = juce::Colour::fromString("#FF000000");
         static const juce::Colour BackgroundFocused = juce::Colour::fromString("#1F000000");
         static const juce::Colour PrimaryFocused    = juce::Colour::fromString("#1FBB86FC");
+    }
+
+    namespace Light
+    {
+        static const juce::Colour Primary           = juce::Colour::fromString("#FF6200EE");
+        static const juce::Colour PrimaryVarient    = juce::Colour::fromString("#FF3700B3");
+        static const juce::Colour Secondary         = juce::Colour::fromString("#FF03DAC6");
+        static const juce::Colour Background        = juce::Colour::fromString("#FFFFFFFF");
+        static const juce::Colour Surface1dp        = juce::Colour::fromString("#0d000000");
+        static const juce::Colour Surface6dp        = juce::Colour::fromString("#1cFFFFFF");
+        static const juce::Colour Error             = juce::Colour::fromString("#FFB00020");
+        static const juce::Colour OnPrimary         = juce::Colour::fromString("#FFFFFFFF");
+        static const juce::Colour OnSecondary       = juce::Colour::fromString("#FF000000");
+        static const juce::Colour OnBackground      = juce::Colour::fromString("#FF000000");
+        static const juce::Colour OnSurface         = juce::Colour::fromString("#FF000000");
+        static const juce::Colour OnError           = juce::Colour::fromString("#FFFFFFFF");
+        static const juce::Colour BackgroundFocused = juce::Colour::fromString("#1FFFFFFF");
+        static const juce::Colour PrimaryFocused    = juce::Colour::fromString("#1F6200EE");
     }
 
     enum ColourIds
@@ -79,6 +102,16 @@ inline void setComponentColors(juce::LookAndFeel& look_and_feel)
 
     // ScrollBar
     look_and_feel.setColour(juce::ScrollBar::ColourIds::thumbColourId, look_and_feel.findColour(AppColors::Surface6dp));
+
+    // TextEditor
+    look_and_feel.setColour(juce::TextEditor::ColourIds::backgroundColourId, look_and_feel.findColour(AppColors::Surface1dp));
+    look_and_feel.setColour(juce::TextEditor::ColourIds::focusedOutlineColourId, juce::Colours::transparentBlack);
+    look_and_feel.setColour(juce::TextEditor::ColourIds::highlightColourId, look_and_feel.findColour(AppColors::PrimaryFocused));
+    look_and_feel.setColour(juce::TextEditor::ColourIds::highlightedTextColourId, look_and_feel.findColour(AppColors::Primary));
+    look_and_feel.setColour(juce::TextEditor::ColourIds::outlineColourId, juce::Colours::transparentBlack);
+    look_and_feel.setColour(juce::TextEditor::ColourIds::shadowColourId, look_and_feel.findColour(AppColors::Surface1dp));
+    look_and_feel.setColour(juce::TextEditor::ColourIds::textColourId, look_and_feel.findColour(AppColors::OnBackground));
+    look_and_feel.setColour(juce::CaretComponent::caretColourId, look_and_feel.findColour(AppColors::Secondary)); 
 }
 
 class DarkLookAndFeel : public juce::LookAndFeel_V4
@@ -101,6 +134,82 @@ public:
         setColour(AppColors::ColourIds::OnError,           AppColors::Dark::OnError);
         setColour(AppColors::ColourIds::BackgroundFocused, AppColors::Dark::BackgroundFocused);
         setColour(AppColors::ColourIds::PrimaryFocused,    AppColors::Dark::PrimaryFocused);
+
+        setComponentColors(*this); 
+    }
+
+    // TableListBox
+    void drawTableHeaderColumn(juce::Graphics& g, juce::TableHeaderComponent& header,
+        const juce::String& columnName, int /*columnId*/,
+        int width, int height, bool isMouseOver, bool isMouseDown,
+        int columnFlags) override
+    {
+        auto highlightColour = header.findColour(juce::TableHeaderComponent::highlightColourId);
+
+        if (isMouseDown)
+            g.fillAll(highlightColour);
+        else if (isMouseOver)
+            g.fillAll(highlightColour.withMultipliedAlpha(0.625f));
+
+        juce::Rectangle<int> area(width, height);
+        area.reduce(4, 0);
+
+        if ((columnFlags & (juce::TableHeaderComponent::sortedForwards | juce::TableHeaderComponent::sortedBackwards)) != 0)
+        {
+            juce::Path sortArrow;
+            sortArrow.addTriangle(0.0f, 0.0f,
+                0.5f, (columnFlags & juce::TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
+                1.0f, 0.0f);
+
+            g.setColour(findColour(AppColors::OnBackground));
+            g.fillPath(sortArrow, sortArrow.getTransformToScaleToFit(area.removeFromRight(height / 2).reduced(2).toFloat(), true));
+        }
+
+        g.setColour(header.findColour(juce::TableHeaderComponent::textColourId));
+        g.setFont(juce::Font((float)height * 0.5f, juce::Font::bold));
+        g.drawFittedText(columnName, area, juce::Justification::centredLeft, 1);
+    }
+
+    // TextEditor 
+void fillTextEditorBackground (juce::Graphics& g, int width, int height, juce::TextEditor& textEditor) override
+{
+    if (dynamic_cast<juce::AlertWindow*> (textEditor.getParentComponent()) != nullptr)
+    {
+        g.setColour (textEditor.findColour (juce::TextEditor::backgroundColourId));
+        g.fillRoundedRectangle(0, 0, width, height, rounding::rounding1); 
+
+        g.setColour (textEditor.findColour (juce::TextEditor::outlineColourId));
+        g.drawHorizontalLine (height - 1, 0.0f, static_cast<float> (width));
+    }
+    else
+    {
+        g.setColour (textEditor.findColour (juce::TextEditor::backgroundColourId));
+        g.fillRoundedRectangle(0, 0, width, height, rounding::rounding1); 
+    }
+}
+
+};
+
+class LightLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+    LightLookAndFeel()
+    {
+        // Associate each custom ColourId with its corresponding Colour
+        setColour(AppColors::ColourIds::Primary,           AppColors::Light::Primary);
+        setColour(AppColors::ColourIds::PrimaryVarient,    AppColors::Light::PrimaryVarient);
+        setColour(AppColors::ColourIds::Secondary,         AppColors::Light::Secondary);
+        setColour(AppColors::ColourIds::Background,        AppColors::Light::Background);
+        setColour(AppColors::ColourIds::Surface1dp,        AppColors::Light::Surface1dp);
+        setColour(AppColors::ColourIds::Surface6dp,        AppColors::Light::Surface6dp);
+        setColour(AppColors::ColourIds::Error,             AppColors::Light::Error);
+        setColour(AppColors::ColourIds::OnPrimary,         AppColors::Light::OnPrimary);
+        setColour(AppColors::ColourIds::OnSecondary,       AppColors::Light::OnSecondary);
+        setColour(AppColors::ColourIds::OnBackground,      AppColors::Light::OnBackground);
+        setColour(AppColors::ColourIds::OnSurface,         AppColors::Light::OnSurface);
+        setColour(AppColors::ColourIds::OnError,           AppColors::Light::OnError);
+        setColour(AppColors::ColourIds::BackgroundFocused, AppColors::Light::BackgroundFocused);
+        setColour(AppColors::ColourIds::PrimaryFocused,    AppColors::Light::PrimaryFocused);
 
         setComponentColors(*this); 
     }
@@ -136,4 +245,5 @@ public:
         g.drawFittedText(columnName, area, juce::Justification::centredLeft, 1);
     }
 };
+
 
