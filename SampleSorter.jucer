@@ -21,10 +21,8 @@
             file="Source/Utils/ValueTreeObjectList.h"/>
     </GROUP>
     <GROUP id="{70DC7FB3-55D8-769D-2605-061BF484BC22}" name="GUI">
-      <FILE id="X62HSB" name="AddFilesComponent.cpp" compile="1" resource="0"
-            file="Source/GUI/AddFilesComponent.cpp"/>
-      <FILE id="VQS8LE" name="AddFilesComponent.h" compile="0" resource="0"
-            file="Source/GUI/AddFilesComponent.h"/>
+      <FILE id="X62HSB" name="AddFiles.cpp" compile="1" resource="0" file="Source/GUI/AddFiles.cpp"/>
+      <FILE id="VQS8LE" name="AddFiles.h" compile="0" resource="0" file="Source/GUI/AddFiles.h"/>
       <FILE id="lVyHuv" name="FileDisplayComponents.cpp" compile="1" resource="0"
             file="Source/GUI/FileDisplayComponents.cpp"/>
       <FILE id="qhD03V" name="FileDisplayComponents.h" compile="0" resource="0"
@@ -35,6 +33,8 @@
       <FILE id="RXlOIl" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/GUI/MainComponent.cpp"/>
       <FILE id="DIAnJP" name="MainComponent.h" compile="0" resource="0" file="Source/GUI/MainComponent.h"/>
+      <FILE id="KJeAG2" name="SearchBar.cpp" compile="1" resource="0" file="Source/GUI/SearchBar.cpp"/>
+      <FILE id="riStjz" name="SearchBar.h" compile="0" resource="0" file="Source/GUI/SearchBar.h"/>
       <FILE id="T9PNAY" name="UIConfig.h" compile="0" resource="0" file="Source/GUI/UIConfig.h"/>
       <FILE id="WdgnHo" name="WaveformDisplay.cpp" compile="1" resource="0"
             file="Source/GUI/WaveformDisplay.cpp"/>
