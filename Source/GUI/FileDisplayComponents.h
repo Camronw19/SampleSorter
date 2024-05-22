@@ -16,36 +16,23 @@
 #include "ValueTreeObjectList.h"
 #include "FileUtils.h"
 
-class SampleLibraryView : public juce::Component, 
-                          public SampleLibraryDataModel::Listener
+class FileListTable : public juce::Component, 
+                      public juce::TableListBoxModel
 {
 public:
-    virtual ~SampleLibraryView(); 
-    SampleLibraryView(const SampleLibraryDataModel&); 
 
-    void paint(juce::Graphics&) override; 
-    void resized() override; 
-
-protected: 
-    SampleLibraryDataModel m_sample_library;
-
-private: 
-    virtual void sampleAdded(const SampleInfoDataModel&) = 0; 
-
-};
-
-class FileListTable : public SampleLibraryView,
-                      public juce::TableListBoxModel, 
-                      public AudioFileDragAndDropTarget
-{
-public:
-    FileListTable(const SampleLibraryDataModel&);
+    FileListTable();
     ~FileListTable() override;
 
     void paint(juce::Graphics&) override;
     void resized() override;
 
+    void setDataModel(std::unique_ptr<juce::XmlElement>); 
+    void setSelectedRowChangedCallback(std::function<void(int)>); 
+
 private:
+    void dataChanged(); 
+
     // m_table component methods
     int getNumRows() override;
     int getColumnAutoSizeWidth(int) override; 
@@ -53,24 +40,19 @@ private:
     void paintRowBackground(juce::Graphics&, int, int, int, bool) override;
     void sortOrderChanged(int, bool) override; 
     void selectedRowsChanged(int) override;
-    void loadData(); 
     void initTable();
     void initTableHeaders();
     juce::String getAttributeNameForColumnId(const int) const;
 
-    // File dnd methods
-    void fileDragEnter(const juce::StringArray&, int, int) override;
-    void fileDragExit(const juce::StringArray&) override; 
-
-    void sampleAdded(const SampleInfoDataModel&) override; 
 
     std::unique_ptr<juce::XmlElement> m_sample_library_xml;
     int m_num_rows;
 
     // Components
     juce::TableListBox m_table;
-    AddFileOverlay m_add_file_overlay; 
     juce::Font m_font; 
+
+    std::function<void(int)> activeFileCallback; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FileListTable)
 };

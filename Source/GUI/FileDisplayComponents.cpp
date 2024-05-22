@@ -13,34 +13,13 @@
 #include "UIConfig.h"
 #include "DataSorting.h"
 
-SampleLibraryView::SampleLibraryView(const SampleLibraryDataModel& sample_library)
-    :m_sample_library(sample_library)
+FileListTable::FileListTable()
+    : m_table("FileListTable", this), 
+      m_num_rows(0), 
+      m_font(fonts::base) 
 {
-    m_sample_library.addListener(*this); 
-}
-
-SampleLibraryView::~SampleLibraryView()
-{
-    m_sample_library.removeListener(*this); 
-}
-
-void SampleLibraryView::paint(juce::Graphics&) {}
-void SampleLibraryView::resized() {}
-
-//==============================================================================
-
-FileListTable::FileListTable(const SampleLibraryDataModel& sample_library)
-    :SampleLibraryView(sample_library),
-     AudioFileDragAndDropTarget(sample_library),
-     m_table("FileListTable", this), 
-     m_num_rows(0), 
-     m_font(fonts::base) 
-{
-    addAndMakeVisible(m_add_file_overlay); 
-
     initTable(); 
     initTableHeaders(); 
-    loadData(); 
 }
 
 FileListTable::~FileListTable()
@@ -57,7 +36,12 @@ void FileListTable::resized()
 {
     juce::Rectangle<int> bounds = getLocalBounds(); 
     m_table.setBounds(bounds.reduced(0, spacing::padding1));
-    m_add_file_overlay.setBounds(bounds); 
+}
+
+void FileListTable::setDataModel(std::unique_ptr<juce::XmlElement> sample_library)
+{
+    m_sample_library_xml = std::move(sample_library); 
+    dataChanged(); 
 }
 
 void FileListTable::initTable()
@@ -73,12 +57,6 @@ void FileListTable::initTableHeaders()
     m_table.getHeader().addColumn("ID", 1, 90, 50, 400, juce::TableHeaderComponent::defaultFlags);
     m_table.getHeader().addColumn("Name", 2, 90, 50, 400, juce::TableHeaderComponent::defaultFlags);
     m_table.getHeader().addColumn("Type", 3, 90, 50, 400, juce::TableHeaderComponent::defaultFlags); 
-}
-
-void FileListTable::loadData()
-{
-    m_sample_library_xml = SampleLibraryView::m_sample_library.getState().createXml(); 
-    m_num_rows = m_sample_library_xml->getNumChildElements();
 }
 
 int FileListTable::getNumRows()
@@ -108,13 +86,16 @@ void FileListTable::paintRowBackground(juce::Graphics& g, int row_number,
 void FileListTable::paintCell(juce::Graphics& g, int row_number, 
     int column_id, int width, int height, bool row_is_selected)
 {
-    g.setColour(row_is_selected ? getLookAndFeel().findColour(AppColors::Primary) : getLookAndFeel().findColour(AppColors::OnBackground));
-    g.setFont(m_font);
-
-    if (auto* row_element = m_sample_library_xml->getChildElement(row_number))
+    if (m_sample_library_xml != nullptr)
     {
-        auto& text = row_element->getStringAttribute(getAttributeNameForColumnId(column_id));
-        g.drawText(text, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
+        g.setColour(row_is_selected ? getLookAndFeel().findColour(AppColors::Primary) : getLookAndFeel().findColour(AppColors::OnBackground));
+        g.setFont(m_font);
+
+        if (auto* row_element = m_sample_library_xml->getChildElement(row_number))
+        {
+            auto& text = row_element->getStringAttribute(getAttributeNameForColumnId(column_id));
+            g.drawText(text, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
+        }
     }
 }
 
@@ -133,13 +114,13 @@ void FileListTable::sortOrderChanged(int new_sort_col_id, bool forwards)
 void FileListTable::selectedRowsChanged(int row)
 {
     juce::XmlElement* selected_xml_element = m_sample_library_xml->getChildElement(row); 
-    int selected_file_id = selected_xml_element->getIntAttribute("id"); 
-    SampleLibraryView::m_sample_library.setActiveFile(selected_file_id); 
+    int selected_file_id = selected_xml_element->getIntAttribute("id");
+    activeFileCallback(selected_file_id); 
 }
 
-void FileListTable::sampleAdded(const SampleInfoDataModel& addedSample)
+void FileListTable::dataChanged()
 {
-    loadData(); 
+    m_num_rows = m_sample_library_xml->getNumChildElements();
     m_table.updateContent();
     m_table.autoSizeAllColumns();
     m_table.repaint(); 
@@ -149,29 +130,23 @@ int FileListTable::getColumnAutoSizeWidth(int columnId)
 {
     int widest = 32;
 
-    for (auto i = getNumRows(); --i >= 0;)
+    if (m_sample_library_xml != nullptr)
     {
-        if (auto* row_element = m_sample_library_xml->getChildElement(i))
+        for (auto i = getNumRows(); --i >= 0;)
         {
-            auto& text = row_element->getStringAttribute(getAttributeNameForColumnId(columnId));
-            widest = juce::jmax(widest, m_font.getStringWidth(text));
+            if (auto* row_element = m_sample_library_xml->getChildElement(i))
+            {
+                auto& text = row_element->getStringAttribute(getAttributeNameForColumnId(columnId));
+                widest = juce::jmax(widest, m_font.getStringWidth(text));
+            }
         }
+
     }
 
     return widest + spacing::padding2;
 }
 
-void FileListTable::fileDragEnter(const juce::StringArray&, int, int)
+void FileListTable::setSelectedRowChangedCallback(std::function<void(int)> callback)
 {
-    juce::ComponentAnimator& animator = juce::Desktop::getInstance().getAnimator(); 
-    animator.fadeIn(&m_add_file_overlay, 200); 
-    repaint(); 
+    activeFileCallback = callback; 
 }
-
-void FileListTable::fileDragExit(const juce::StringArray&)
-{
-    juce::ComponentAnimator& animator = juce::Desktop::getInstance().getAnimator(); 
-    animator.fadeOut(&m_add_file_overlay, 200); 
-    repaint(); 
-}
-

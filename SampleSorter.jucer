@@ -13,6 +13,8 @@
     </GROUP>
     <GROUP id="{7AB4DEBC-68CA-2641-5784-E40F66BA529F}" name="core"/>
     <GROUP id="{57526AA9-EF36-A696-13F9-E1705C541622}" name="util">
+      <FILE id="uBJ8q0" name="DataFilters.cpp" compile="1" resource="0" file="Source/Utils/DataFilters.cpp"/>
+      <FILE id="jBrjcm" name="DataFilters.h" compile="0" resource="0" file="Source/Utils/DataFilters.h"/>
       <FILE id="GFMCbL" name="DataSorting.cpp" compile="1" resource="0" file="Source/Utils/DataSorting.cpp"/>
       <FILE id="AAelvw" name="DataSorting.h" compile="0" resource="0" file="Source/Utils/DataSorting.h"/>
       <FILE id="qBwt3A" name="FileUtils.cpp" compile="1" resource="0" file="Source/Utils/FileUtils.cpp"/>
