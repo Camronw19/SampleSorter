@@ -15,13 +15,14 @@
 #include "SampleLibrary.h"
 #include "ValueTreeObjectList.h"
 #include "FileUtils.h"
+#include "UIConfig.h"
 
 class FileListTable : public juce::Component, 
                       public juce::TableListBoxModel
 {
 public:
 
-    FileListTable();
+    FileListTable(const SampleLibraryDataModel&);
     ~FileListTable() override;
 
     void paint(juce::Graphics&) override;
@@ -29,6 +30,9 @@ public:
 
     void setDataModel(std::shared_ptr<juce::XmlElement>); 
     void setSelectedRowChangedCallback(std::function<void(int)>); 
+
+    int getSelection(const int) const; 
+    void setSelection(const int row_number, const int new_selection); 
 
 private:
     void dataChanged(); 
@@ -43,8 +47,9 @@ private:
     void initTable();
     void initTableHeaders();
     juce::String getAttributeNameForColumnId(const int) const;
+    juce::Component* refreshComponentForCell(int, int, bool, juce::Component*) override; 
 
-
+    SampleLibraryDataModel m_sample_library; 
     std::shared_ptr<juce::XmlElement> m_sample_library_xml;
     int m_num_rows;
 
@@ -57,4 +62,30 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FileListTable)
 };
 
+class StarToggle : public juce::Component
+{
+public:  
+    StarToggle(FileListTable&); 
+    ~StarToggle(); 
 
+    void resized() override; 
+
+    void setRowAndColumn(int, int);
+
+private: 
+    class StarToggleLookAndFeel : public DarkLookAndFeel
+    {
+    public:
+        void drawToggleButton(juce::Graphics& g, juce::ToggleButton& button,
+            bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
+    };
+
+
+    FileListTable& m_owner;
+    juce::ToggleButton m_toggle_button; 
+
+    int m_row; 
+    int m_column_id; 
+
+    StarToggleLookAndFeel m_star_toggle_lnf; 
+};

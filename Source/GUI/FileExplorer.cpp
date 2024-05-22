@@ -15,21 +15,22 @@
 //==============================================================================
 FileExplorer::FileExplorer(const SampleLibraryDataModel& sample_library)
     :m_sample_library(sample_library), 
-    AudioFileDragAndDropTarget(sample_library), 
-    m_prev_search_length(0)
+     m_file_list(sample_library),
+     AudioFileDragAndDropTarget(sample_library), 
+     m_prev_search_length(0)
 {
-      m_sample_library.addListener(*this); 
+    m_sample_library.addListener(*this); 
 
-      m_sample_library_xml = std::move(m_sample_library.getState().createXml()); 
+    m_sample_library_xml = std::move(m_sample_library.getState().createXml()); 
 
-      addAndMakeVisible(m_file_list); 
-      m_file_list.setSelectedRowChangedCallback([this](int row) { onFileListRowSelected(row); });
+    addAndMakeVisible(m_file_list); 
+    m_file_list.setSelectedRowChangedCallback([this](int row) { onFileListRowSelected(row); });
 
-      addAndMakeVisible(m_search_bar); 
-      m_search_bar.addListener(this); 
+    addAndMakeVisible(m_search_bar); 
+    m_search_bar.addListener(this); 
 
-      addAndMakeVisible(m_add_file_overlay); 
-      m_add_file_overlay.setVisible(false); 
+    addAndMakeVisible(m_add_file_overlay); 
+    m_add_file_overlay.setVisible(false); 
 }
 
 FileExplorer::~FileExplorer()
