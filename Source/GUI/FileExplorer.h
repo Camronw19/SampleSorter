@@ -35,8 +35,6 @@ public:
 
 private:
     void sampleAdded(const SampleInfoDataModel& addedSample) override; 
-    void generateXML(); 
-    void setFileListData();    
     void onFileListRowSelected(int); 
     
     // File dnd methods
@@ -45,6 +43,7 @@ private:
 
     SampleLibraryDataModel m_sample_library; 
     std::unique_ptr<juce::XmlElement> m_sample_library_xml; 
+    std::unique_ptr<juce::XmlElement> m_sample_library_xml_filtered; 
 
     FileListTable m_file_list;
     SearchBar m_search_bar; 
@@ -52,7 +51,7 @@ private:
     AddFileOverlay m_add_file_overlay; 
 
     FuzzySearchFilter m_fuzzy_search_filter; 
-    bool m_search_is_active; 
+    int m_prev_search_length; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileExplorer)
 };
