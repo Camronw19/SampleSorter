@@ -20,7 +20,7 @@ FileExplorer::FileExplorer(const SampleLibraryDataModel& sample_library)
 {
       m_sample_library.addListener(*this); 
 
-      m_sample_library_xml = m_sample_library.getState().createXml(); 
+      m_sample_library_xml = std::move(m_sample_library.getState().createXml()); 
 
       addAndMakeVisible(m_file_list); 
       m_file_list.setSelectedRowChangedCallback([this](int row) { onFileListRowSelected(row); });
@@ -57,22 +57,16 @@ void FileExplorer::textEditorTextChanged(juce::TextEditor& text_editor)
 {
     if (&text_editor == &m_search_bar)
     {
-        juce::String text = m_search_bar.getText();
+        juce::String search_text = m_search_bar.getText();
         
-        if (text.length() < m_prev_search_length || m_prev_search_length == 0)
-        {
-            m_sample_library_xml_filtered = std::make_unique<juce::XmlElement>(*m_sample_library_xml); 
-            DBG("REGEN FILTER");
-        }
-        else
-        {
-            DBG("USING PREV"); 
-        }
+        // Use previous filtered XML if user is adding to search, otherwise regenerate 
+        if (search_text.length() < m_prev_search_length || m_prev_search_length == 0)
+            m_sample_library_xml_filtered = std::make_shared<juce::XmlElement>(*m_sample_library_xml); 
 
-        m_prev_search_length = text.length();
-        m_fuzzy_search_filter.filter(m_sample_library_xml_filtered, text); 
-        std::unique_ptr<juce::XmlElement> sample_library_xml_filtered = std::make_unique<juce::XmlElement>(*m_sample_library_xml_filtered); 
-        m_file_list.setDataModel(std::move(sample_library_xml_filtered)); 
+        m_prev_search_length = search_text.length();
+
+        m_fuzzy_search_filter.filter(m_sample_library_xml_filtered, search_text); 
+        m_file_list.setDataModel(m_sample_library_xml_filtered); 
     }
 }
 
@@ -82,9 +76,7 @@ void FileExplorer::sampleAdded(const SampleInfoDataModel& added_sample)
      std::unique_ptr<juce::XmlElement> added_sample_xml = added_sample.getState().createXml(); 
      m_sample_library_xml->addChildElement(added_sample_xml.release());
 
-     // Copy XML state to m_file_list
-     std::unique_ptr<juce::XmlElement> sample_library_xml = std::make_unique<juce::XmlElement>(*m_sample_library_xml); 
-     m_file_list.setDataModel(std::move(sample_library_xml));
+     m_file_list.setDataModel(m_sample_library_xml);
 }
 
 void FileExplorer::fileDragEnter(const juce::StringArray&, int, int)

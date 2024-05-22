@@ -11,7 +11,7 @@
 #include "DataFilters.h"
 #include  "SampleInfo.h"
 
-void FuzzySearchFilter::filter(std::unique_ptr<juce::XmlElement>& tree_to_filter, juce::String query)
+void FuzzySearchFilter::filter(std::shared_ptr<juce::XmlElement>& tree_to_filter, juce::String query)
 {
     std::vector<juce::XmlElement*> elementsToRemove;
 

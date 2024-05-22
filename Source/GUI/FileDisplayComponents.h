@@ -27,7 +27,7 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    void setDataModel(std::unique_ptr<juce::XmlElement>); 
+    void setDataModel(std::shared_ptr<juce::XmlElement>); 
     void setSelectedRowChangedCallback(std::function<void(int)>); 
 
 private:
@@ -45,7 +45,7 @@ private:
     juce::String getAttributeNameForColumnId(const int) const;
 
 
-    std::unique_ptr<juce::XmlElement> m_sample_library_xml;
+    std::shared_ptr<juce::XmlElement> m_sample_library_xml;
     int m_num_rows;
 
     // Components

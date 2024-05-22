@@ -15,11 +15,11 @@ class Filter
 {
 public: 
     virtual ~Filter() = default; 
-    virtual void filter(std::unique_ptr<juce::XmlElement>& tree_to_filter, juce::String query) = 0; 
+    virtual void filter(std::shared_ptr<juce::XmlElement>& tree_to_filter, juce::String query) = 0; 
 };
 
 class FuzzySearchFilter : public Filter
 {
 public: 
-    void filter(std::unique_ptr<juce::XmlElement>&, juce::String) override; 
+    void filter(std::shared_ptr<juce::XmlElement>&, juce::String) override; 
 };

@@ -38,9 +38,9 @@ void FileListTable::resized()
     m_table.setBounds(bounds.reduced(0, spacing::padding1));
 }
 
-void FileListTable::setDataModel(std::unique_ptr<juce::XmlElement> sample_library)
+void FileListTable::setDataModel(std::shared_ptr<juce::XmlElement> sample_library)
 {
-    m_sample_library_xml = std::move(sample_library); 
+    m_sample_library_xml = sample_library; 
     dataChanged(); 
 }
 

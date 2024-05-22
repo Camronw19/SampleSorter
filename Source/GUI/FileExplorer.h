@@ -42,8 +42,8 @@ private:
     void fileDragExit(const juce::StringArray&) override; 
 
     SampleLibraryDataModel m_sample_library; 
-    std::unique_ptr<juce::XmlElement> m_sample_library_xml; 
-    std::unique_ptr<juce::XmlElement> m_sample_library_xml_filtered; 
+    std::shared_ptr<juce::XmlElement> m_sample_library_xml; 
+    std::shared_ptr<juce::XmlElement> m_sample_library_xml_filtered; 
 
     FileListTable m_file_list;
     SearchBar m_search_bar; 
