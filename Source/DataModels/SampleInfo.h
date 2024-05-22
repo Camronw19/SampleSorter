@@ -20,6 +20,7 @@ namespace ModelIdentifiers
     DECLARE_ID(name)
     DECLARE_ID(file_path)
     DECLARE_ID(file_extension)
+    DECLARE_ID(is_favorite)
 }
 
 class SampleInfoDataModel
@@ -35,11 +36,13 @@ public:
     juce::String getName() const; 
     juce::String getFilePath() const; 
     juce::String getFileExtension() const; 
+    bool isFavorite() const; 
 
     // Setters 
     void setName(const juce::String); 
     void setFilePath(const juce::String); 
-    void setFileExtension(const juce::String); 
+    void setFileExtension(const juce::String);
+    void setIsFavorite(const bool);
 
 private: 
     static int32_t m_instance_id; 
@@ -49,4 +52,5 @@ private:
     juce::CachedValue<juce::String> m_name; 
     juce::CachedValue<juce::String> m_file_path; 
     juce::CachedValue<juce::String> m_file_extension; 
+    juce::CachedValue<bool> m_is_favorite; 
  };
