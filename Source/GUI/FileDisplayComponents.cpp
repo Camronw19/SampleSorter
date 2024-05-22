@@ -114,8 +114,12 @@ void FileListTable::sortOrderChanged(int new_sort_col_id, bool forwards)
 void FileListTable::selectedRowsChanged(int row)
 {
     juce::XmlElement* selected_xml_element = m_sample_library_xml->getChildElement(row); 
-    int selected_file_id = selected_xml_element->getIntAttribute("id");
-    activeFileCallback(selected_file_id); 
+
+    if (selected_xml_element != nullptr)
+    {
+        int selected_file_id = selected_xml_element->getIntAttribute("id");
+        activeFileCallback(selected_file_id); 
+    }
 }
 
 void FileListTable::dataChanged()
