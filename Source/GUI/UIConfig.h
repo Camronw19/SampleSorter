@@ -13,61 +13,61 @@
 
 namespace spacing
 {
-    static const int padding1 = 5;
-    static const int padding2 = 10;
-    static const int padding3 = 15;
-    static const int padding4 = 20;
+    inline const int padding1 = 5;
+    inline const int padding2 = 10;
+    inline const int padding3 = 15;
+    inline const int padding4 = 20;
 };
 
 namespace rounding
 {
-    static const int rounding1 = 5;
-    static const int rounding2 = 10;
-    static const int rounding3 = 15;
-    static const int rounding4 = 20;
+    inline const int rounding1 = 5;
+    inline const int rounding2 = 10;
+    inline const int rounding3 = 15;
+    inline const int rounding4 = 20;
 }
 
 namespace fonts
 {
-    static const float base = 14.0f; 
+    inline const float base = 14.0f; 
 }
 
 namespace AppColors
 {
     namespace Dark
     {
-        static const juce::Colour Primary           = juce::Colour::fromString("#FFBB86FC");
-        static const juce::Colour PrimaryVarient    = juce::Colour::fromString("#FF3700B3");
-        static const juce::Colour Secondary         = juce::Colour::fromString("#FF03DAC6");
-        static const juce::Colour Background        = juce::Colour::fromString("#FF121212");
-        static const juce::Colour Surface1dp        = juce::Colour::fromString("#0dffffff");
-        static const juce::Colour Surface6dp        = juce::Colour::fromString("#1cffffff");
-        static const juce::Colour Error             = juce::Colour::fromString("#FFCF6679");
-        static const juce::Colour OnPrimary         = juce::Colour::fromString("#FF000000");
-        static const juce::Colour OnSecondary       = juce::Colour::fromString("#FF000000");
-        static const juce::Colour OnBackground      = juce::Colour::fromString("#FFFFFFFF");
-        static const juce::Colour OnSurface         = juce::Colour::fromString("#FFFFFFFF");
-        static const juce::Colour OnError           = juce::Colour::fromString("#FF000000");
-        static const juce::Colour BackgroundFocused = juce::Colour::fromString("#1F000000");
-        static const juce::Colour PrimaryFocused    = juce::Colour::fromString("#1FBB86FC");
+        inline const juce::Colour Primary           = juce::Colour::fromString("#FFBB86FC");
+        inline const juce::Colour PrimaryVarient    = juce::Colour::fromString("#FF3700B3");
+        inline const juce::Colour Secondary         = juce::Colour::fromString("#FF03DAC6");
+        inline const juce::Colour Background        = juce::Colour::fromString("#FF121212");
+        inline const juce::Colour Surface1dp        = juce::Colour::fromString("#0dffffff");
+        inline const juce::Colour Surface6dp        = juce::Colour::fromString("#1cffffff");
+        inline const juce::Colour Error             = juce::Colour::fromString("#FFCF6679");
+        inline const juce::Colour OnPrimary         = juce::Colour::fromString("#FF000000");
+        inline const juce::Colour OnSecondary       = juce::Colour::fromString("#FF000000");
+        inline const juce::Colour OnBackground      = juce::Colour::fromString("#FFFFFFFF");
+        inline const juce::Colour OnSurface         = juce::Colour::fromString("#FFFFFFFF");
+        inline const juce::Colour OnError           = juce::Colour::fromString("#FF000000");
+        inline const juce::Colour BackgroundFocused = juce::Colour::fromString("#1F000000");
+        inline const juce::Colour PrimaryFocused    = juce::Colour::fromString("#1FBB86FC");
     }
 
     namespace Light
     {
-        static const juce::Colour Primary           = juce::Colour::fromString("#FF6200EE");
-        static const juce::Colour PrimaryVarient    = juce::Colour::fromString("#FF3700B3");
-        static const juce::Colour Secondary         = juce::Colour::fromString("#FF03DAC6");
-        static const juce::Colour Background        = juce::Colour::fromString("#FFFFFFFF");
-        static const juce::Colour Surface1dp        = juce::Colour::fromString("#0d000000");
-        static const juce::Colour Surface6dp        = juce::Colour::fromString("#1cFFFFFF");
-        static const juce::Colour Error             = juce::Colour::fromString("#FFB00020");
-        static const juce::Colour OnPrimary         = juce::Colour::fromString("#FFFFFFFF");
-        static const juce::Colour OnSecondary       = juce::Colour::fromString("#FF000000");
-        static const juce::Colour OnBackground      = juce::Colour::fromString("#FF000000");
-        static const juce::Colour OnSurface         = juce::Colour::fromString("#FF000000");
-        static const juce::Colour OnError           = juce::Colour::fromString("#FFFFFFFF");
-        static const juce::Colour BackgroundFocused = juce::Colour::fromString("#1FFFFFFF");
-        static const juce::Colour PrimaryFocused    = juce::Colour::fromString("#1F6200EE");
+        inline const juce::Colour Primary           = juce::Colour::fromString("#FF6200EE");
+        inline const juce::Colour PrimaryVarient    = juce::Colour::fromString("#FF3700B3");
+        inline const juce::Colour Secondary         = juce::Colour::fromString("#FF03DAC6");
+        inline const juce::Colour Background        = juce::Colour::fromString("#FFFFFFFF");
+        inline const juce::Colour Surface1dp        = juce::Colour::fromString("#0d000000");
+        inline const juce::Colour Surface6dp        = juce::Colour::fromString("#1cFFFFFF");
+        inline const juce::Colour Error             = juce::Colour::fromString("#FFB00020");
+        inline const juce::Colour OnPrimary         = juce::Colour::fromString("#FFFFFFFF");
+        inline const juce::Colour OnSecondary       = juce::Colour::fromString("#FF000000");
+        inline const juce::Colour OnBackground      = juce::Colour::fromString("#FF000000");
+        inline const juce::Colour OnSurface         = juce::Colour::fromString("#FF000000");
+        inline const juce::Colour OnError           = juce::Colour::fromString("#FFFFFFFF");
+        inline const juce::Colour BackgroundFocused = juce::Colour::fromString("#1FFFFFFF");
+        inline const juce::Colour PrimaryFocused    = juce::Colour::fromString("#1F6200EE");
     }
 
     enum ColourIds
