@@ -38,9 +38,10 @@ void FilterDisplay::resized()
 
 FilterBar::FilterBar()
 {
-    addAndMakeVisible(m_add_filter_button); 
-    m_add_filter_button.setText("Add Filter"); 
-    m_add_filter_button.onClick = ([this]() { DBG("BUTTON CLICKED"); }); 
+    addAndMakeVisible(m_add_filter); 
+    m_add_filter.addItem("TEST", 1); 
+    m_add_filter.addItem("TEST 2", 2); 
+
     addAndMakeVisible(m_filter_1); 
 }
 
@@ -59,5 +60,5 @@ void FilterBar::resized()
     auto bounds = getLocalBounds(); 
     bounds.reduce(spacing::padding1, spacing::padding1); 
 
-    m_add_filter_button.setBounds(bounds.removeFromLeft(getWidth() / 4)); 
+    m_add_filter.setBounds(bounds.removeFromLeft(getWidth() / 4)); 
 }

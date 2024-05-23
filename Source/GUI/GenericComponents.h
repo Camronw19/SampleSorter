@@ -47,14 +47,14 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AddButton)
 };
 
-class AddComboBox : public juce::ComboBox
+class CustomComboBox : public juce::ComboBox
 {
 public: 
-    AddComboBox(); 
-    ~AddComboBox() override;
+    CustomComboBox(); 
+    ~CustomComboBox() override;
 
 private: 
-    class AddComboBoxLookAndFeel : public DarkLookAndFeel
+    class CustomComboBoxLookAndFeel : public DarkLookAndFeel
     {
     public:
         void drawComboBox(juce::Graphics&, int, int, bool,
@@ -72,6 +72,6 @@ private:
         juce::PopupMenu::Options getOptionsForComboBoxPopupMenu(juce::ComboBox& box, juce::Label& label) override; 
     };
 
-    AddComboBoxLookAndFeel m_add_combo_box_lnf; 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AddComboBox)
+    CustomComboBoxLookAndFeel m_custom_combo_box_lnf; 
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CustomComboBox)
 };

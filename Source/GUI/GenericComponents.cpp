@@ -9,7 +9,7 @@
 */
 
 #include <JuceHeader.h>
-#include "Buttons.h"
+#include "GenericComponents.h"
 #include "UIConfig.h"
 
 //==============================================================================
@@ -122,17 +122,17 @@ void AddButton::setText(const juce::String text)
 
 //==============================================================================
 
-AddComboBox::AddComboBox()
+CustomComboBox::CustomComboBox()
 {
-    setLookAndFeel(&m_add_combo_box_lnf);
+    setLookAndFeel(&m_custom_combo_box_lnf);
 }
 
-AddComboBox::~AddComboBox()
+CustomComboBox::~CustomComboBox()
 {
     setLookAndFeel(nullptr); 
 }
 
-void AddComboBox::AddComboBoxLookAndFeel::drawComboBox (juce::Graphics& g, int width, int height, bool,
+void CustomComboBox::CustomComboBoxLookAndFeel::drawComboBox (juce::Graphics& g, int width, int height, bool,
                                    int, int, int, int, ComboBox& box)
 {
     auto cornerSize = box.findParentComponentOfClass<juce::ChoicePropertyComponent>() != nullptr ? 0.0f : 3.0f;
@@ -155,7 +155,7 @@ void AddComboBox::AddComboBoxLookAndFeel::drawComboBox (juce::Graphics& g, int w
 }
 
 
-void AddComboBox::AddComboBoxLookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int width, int height)
+void CustomComboBox::CustomComboBoxLookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int width, int height)
 {
     juce::Rectangle<float> bounds(width, height); 
     g.setColour(findColour(juce::PopupMenu::backgroundColourId)); 
@@ -163,12 +163,12 @@ void AddComboBox::AddComboBoxLookAndFeel::drawPopupMenuBackground(juce::Graphics
 }
 
 
-void AddComboBox::AddComboBoxLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics& g, int width, int height, const juce::PopupMenu::Options&)
+void CustomComboBox::CustomComboBoxLookAndFeel::drawPopupMenuBackgroundWithOptions(juce::Graphics& g, int width, int height, const juce::PopupMenu::Options&)
 {
     drawPopupMenuBackground(g, width, height);
 }
 
-void AddComboBox::AddComboBoxLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectangle<int>& area,
+void CustomComboBox::CustomComboBoxLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectangle<int>& area,
                                         const bool isSeparator, const bool isActive,
                                         const bool isHighlighted, const bool isTicked,
                                         const bool hasSubMenu, const juce::String& text,
@@ -261,7 +261,7 @@ void AddComboBox::AddComboBoxLookAndFeel::drawPopupMenuItem (juce::Graphics& g, 
     }
 }
 
-juce::PopupMenu::Options  AddComboBox::AddComboBoxLookAndFeel::getOptionsForComboBoxPopupMenu (juce::ComboBox& box, juce::Label& label)
+juce::PopupMenu::Options  CustomComboBox::CustomComboBoxLookAndFeel::getOptionsForComboBoxPopupMenu (juce::ComboBox& box, juce::Label& label)
 {
         return juce::PopupMenu::Options().withTargetComponent (&box)
                                .withItemThatMustBeVisible (box.getSelectedId())

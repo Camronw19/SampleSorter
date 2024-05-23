@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Buttons.h"
+#include "GenericComponents.h"
 
 //==============================================================================
 /*
@@ -40,7 +40,7 @@ public:
     void resized() override;
 
 private:
-    AddButton m_add_filter_button; 
+    CustomComboBox m_add_filter; 
     FilterDisplay m_filter_1; 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterBar)
 };

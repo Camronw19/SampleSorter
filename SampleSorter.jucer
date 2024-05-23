@@ -25,8 +25,10 @@
     <GROUP id="{70DC7FB3-55D8-769D-2605-061BF484BC22}" name="GUI">
       <FILE id="X62HSB" name="AddFiles.cpp" compile="1" resource="0" file="Source/GUI/AddFiles.cpp"/>
       <FILE id="VQS8LE" name="AddFiles.h" compile="0" resource="0" file="Source/GUI/AddFiles.h"/>
-      <FILE id="xxcmft" name="Buttons.cpp" compile="1" resource="0" file="Source/GUI/Buttons.cpp"/>
-      <FILE id="xEKBDs" name="Buttons.h" compile="0" resource="0" file="Source/GUI/Buttons.h"/>
+      <FILE id="xxcmft" name="GenericComponents.cpp" compile="1" resource="0"
+            file="Source/GUI/GenericComponents.cpp"/>
+      <FILE id="xEKBDs" name="GenericComponents.h" compile="0" resource="0"
+            file="Source/GUI/GenericComponents.h"/>
       <FILE id="lVyHuv" name="FileDisplayComponents.cpp" compile="1" resource="0"
             file="Source/GUI/FileDisplayComponents.cpp"/>
       <FILE id="qhD03V" name="FileDisplayComponents.h" compile="0" resource="0"
