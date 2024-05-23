@@ -112,6 +112,22 @@ inline void setComponentColors(juce::LookAndFeel& look_and_feel)
     look_and_feel.setColour(juce::TextEditor::ColourIds::shadowColourId, look_and_feel.findColour(AppColors::Surface1dp));
     look_and_feel.setColour(juce::TextEditor::ColourIds::textColourId, look_and_feel.findColour(AppColors::OnBackground));
     look_and_feel.setColour(juce::CaretComponent::caretColourId, look_and_feel.findColour(AppColors::Secondary)); 
+
+    // ComboBox
+    look_and_feel.setColour(juce::ComboBox::ColourIds::backgroundColourId, look_and_feel.findColour(AppColors::Surface1dp)); 
+    look_and_feel.setColour(juce::ComboBox::ColourIds::arrowColourId, look_and_feel.findColour(AppColors::Secondary)); 
+    look_and_feel.setColour(juce::ComboBox::ColourIds::buttonColourId, look_and_feel.findColour(AppColors::Primary)); 
+    look_and_feel.setColour(juce::ComboBox::ColourIds::focusedOutlineColourId, look_and_feel.findColour(AppColors::Surface1dp)); 
+    look_and_feel.setColour(juce::ComboBox::ColourIds::outlineColourId, juce::Colours::transparentBlack); 
+    look_and_feel.setColour(juce::ComboBox::ColourIds::textColourId, look_and_feel.findColour(AppColors::OnBackground)); 
+
+    // PopupMenu
+    look_and_feel.setColour(juce::PopupMenu::ColourIds::backgroundColourId, juce::Colour::fromString("#FE292929"));
+    look_and_feel.setColour(juce::PopupMenu::ColourIds::headerTextColourId, look_and_feel.findColour(AppColors::OnBackground)); 
+    look_and_feel.setColour(juce::PopupMenu::ColourIds::highlightedBackgroundColourId, look_and_feel.findColour(AppColors::PrimaryFocused)); 
+    look_and_feel.setColour(juce::PopupMenu::ColourIds::highlightedTextColourId, look_and_feel.findColour(AppColors::Primary)); 
+    look_and_feel.setColour(juce::PopupMenu::ColourIds::textColourId, look_and_feel.findColour(AppColors::OnBackground)); 
+
 }
 
 class DarkLookAndFeel : public juce::LookAndFeel_V4
