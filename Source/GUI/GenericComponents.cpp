@@ -57,71 +57,86 @@ void PlusButton::resized()
 
 //==============================================================================
 
-AddButton::AddButton()
-    : juce::Button("AddButton")
+IconTextButton::IconTextButton()
+    : juce::Button("IconTextButton")
 {
 
 }
 
-AddButton::~AddButton()
+IconTextButton::~IconTextButton()
 {
 
 }
 
-void AddButton::paintButton(juce::Graphics& g, bool is_mouse_over, bool is_button_down)
+void IconTextButton::paintButton(juce::Graphics& g, bool is_mouse_over, bool is_button_down)
 {
     juce::Rectangle<int> bounds = getLocalBounds(); 
 
     if (is_mouse_over)
-    {
-        g.setColour(getLookAndFeel().findColour(AppColors::Surface6dp)); 
-        g.fillRoundedRectangle(bounds.toFloat(), rounding::rounding1); 
-    }
+        g.setColour(getLookAndFeel().findColour(AppColors::Surface6dp));
+    else
+        g.setColour(getLookAndFeel().findColour(AppColors::Surface1dp)); 
 
+    g.fillRoundedRectangle(bounds.toFloat(), rounding::rounding1); 
 
-    // Set the color for the plus sign and text
+    // Set the color for the icon and text
     g.setColour(getLookAndFeel().findColour(AppColors::OnBackground));
 
-    // Calculate the bounds for the plus sign and text
-    int padding = spacing::padding1;
-    int plus_size = bounds.getHeight() / 2;
-    int plus_thickness= 2;
-
-    // Draw the plus sign
-    juce::Path plusPath;
-    plusPath.startNewSubPath(padding, bounds.getCentreY());
-    plusPath.lineTo(padding + plus_size, bounds.getCentreY());
-    plusPath.startNewSubPath(padding + plus_size / 2, bounds.getCentreY() - plus_size / 2);
-    plusPath.lineTo(padding + plus_size / 2, bounds.getCentreY() + plus_size / 2);
-
-    g.strokePath(plusPath, juce::PathStrokeType(plus_thickness));
-
+    if(!m_icon_bounds.isEmpty() && m_icon != nullptr)
+        m_icon->drawWithin(g, m_icon_bounds.toFloat(), juce::RectanglePlacement::fillDestination, 1.0f);
+   
     // Draw the text
     juce::Font font(fonts::base); 
     g.setFont(font);
 
     // Calculate the area available for text
-    int textStartX = padding + plus_size + padding;
-    int textWidth = bounds.getWidth() - textStartX - padding;
+    int textStartX = m_icon_bounds.getRight() + spacing::padding1; 
+    int textWidth = bounds.getWidth() - textStartX - spacing::padding1;
 
-    if (g.getCurrentFont().getStringWidth(m_text) <= textWidth)
-        g.drawText(m_text, textStartX, 0, textWidth, bounds.getHeight(), juce::Justification::centredLeft);
-
-    }
-
-void AddButton::resized()
-{
+    g.drawText(m_text, textStartX, 0, textWidth, bounds.getHeight(), juce::Justification::centredLeft);
 
 }
 
-void AddButton::setText(const juce::String text)
+void IconTextButton::resized()
+{
+    calculateIconBounds(); 
+    m_icon->setBounds(m_icon_bounds); 
+}
+
+void IconTextButton::setText(const juce::String text)
 {
     m_text = text; 
 }
 
+void IconTextButton::setIcon(std::unique_ptr<juce::Drawable> drawable)
+{
+    m_icon = std::move(drawable); 
+}
+
+int IconTextButton::getFittedWidth()
+{
+    int fitted_width = 0; 
+
+    if (!m_icon_bounds.isEmpty() && m_icon != nullptr)
+        fitted_width += m_icon_bounds.getWidth(); 
+
+    fitted_width += spacing::padding1 * 2; 
+
+    juce::Font font(fonts::base); 
+    fitted_width += font.getStringWidth(m_text);
+
+    return fitted_width; 
+}
+
+void IconTextButton::calculateIconBounds()
+{
+    float padding = spacing::padding1;
+    float icon_size = static_cast<float>(getBounds().getHeight()) / 2;
+
+    m_icon_bounds.setBounds(padding, getHeight() / 4, icon_size, icon_size);
+}
 
 //==============================================================================
-
 CustomComboBox::CustomComboBox()
 {
     setLookAndFeel(&m_custom_combo_box_lnf);
@@ -168,99 +183,6 @@ void CustomComboBox::CustomComboBoxLookAndFeel::drawPopupMenuBackgroundWithOptio
     drawPopupMenuBackground(g, width, height);
 }
 
-void CustomComboBox::CustomComboBoxLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectangle<int>& area,
-                                        const bool isSeparator, const bool isActive,
-                                        const bool isHighlighted, const bool isTicked,
-                                        const bool hasSubMenu, const juce::String& text,
-                                        const juce::String& shortcutKeyText,
-                                        const juce::Drawable* icon, const juce::Colour* const textColourToUse)
-{
-    if (isSeparator)
-    {
-        auto r = area.reduced (5, 0);
-        r.removeFromTop (r.getHeight() / 2 - 1);
-
-        g.setColour (juce::Colour (0x33000000));
-        g.fillRect (r.removeFromTop (1));
-
-        g.setColour (juce::Colour (0x66ffffff));
-        g.fillRect (r.removeFromTop (1));
-    }
-    else
-    {
-        auto textColour = findColour (juce::PopupMenu::textColourId);
-
-        if (textColourToUse != nullptr)
-            textColour = *textColourToUse;
-
-        auto r = area.reduced (1);
-
-        if (isHighlighted)
-        {
-            g.setColour (findColour (juce::PopupMenu::highlightedBackgroundColourId));
-            g.fillRect (r);
-
-            g.setColour (findColour (juce::PopupMenu::highlightedTextColourId));
-        }
-        else
-        {
-            g.setColour (textColour);
-        }
-
-        if (! isActive)
-            g.setOpacity (0.3f);
-
-        juce::Font font (getPopupMenuFont());
-
-        auto maxFontHeight = (float) area.getHeight() / 1.3f;
-
-        if (font.getHeight() > maxFontHeight)
-            font.setHeight (maxFontHeight);
-
-        g.setFont (font);
-
-        auto iconArea = r.removeFromLeft ((r.getHeight() * 5) / 4).reduced (3).toFloat();
-
-        if (icon != nullptr)
-        {
-            icon->drawWithin (g, iconArea, juce::RectanglePlacement::centred | juce::RectanglePlacement::onlyReduceInSize, 1.0f);
-        }
-        else if (isTicked)
-        {
-            auto tick = getTickShape (1.0f);
-            g.fillPath (tick, tick.getTransformToScaleToFit (iconArea, true));
-        }
-
-        if (hasSubMenu)
-        {
-            auto arrowH = 0.6f * getPopupMenuFont().getAscent();
-
-            auto x = (float) r.removeFromRight ((int) arrowH).getX();
-            auto halfH = (float) r.getCentreY();
-
-            juce::Path p;
-            p.addTriangle (x, halfH - arrowH * 0.5f,
-                           x, halfH + arrowH * 0.5f,
-                           x + arrowH * 0.6f, halfH);
-
-            g.fillPath (p);
-        }
-
-        r.removeFromRight (3);
-        g.drawFittedText (text, r, juce::Justification::centredLeft, 1);
-
-        if (shortcutKeyText.isNotEmpty())
-        {
-            juce::Font f2 (font);
-            f2.setHeight (f2.getHeight() * 0.75f);
-            f2.setHorizontalScale (0.95f);
-            g.setFont (f2);
-
-            g.drawText (shortcutKeyText, r, juce::Justification::centredRight, true);
-        }
-    }
-}
-
 juce::PopupMenu::Options  CustomComboBox::CustomComboBoxLookAndFeel::getOptionsForComboBoxPopupMenu (juce::ComboBox& box, juce::Label& label)
 {
         return juce::PopupMenu::Options().withTargetComponent (&box)
@@ -271,4 +193,3 @@ juce::PopupMenu::Options  CustomComboBox::CustomComboBoxLookAndFeel::getOptionsF
                                .withStandardItemHeight (label.getHeight())
                                .withTargetScreenArea(box.getScreenBounds().translated(0, spacing::padding1));
 }
-

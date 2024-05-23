@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "UIConfig.h"
+#include <vector>
 
 //==============================================================================
 /*
@@ -30,22 +31,30 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlusButton)
 };
 
-class AddButton : public juce::Button
+class IconTextButton : public juce::Button
 {
 public: 
-    AddButton(); 
-    ~AddButton() override; 
+    IconTextButton(); 
+    ~IconTextButton() override; 
 
     void paintButton (juce::Graphics&, bool, bool) override;
     void resized() override;
 
+    int getFittedWidth(); 
+
     void setText(const juce::String); 
+    void setIcon(std::unique_ptr<juce::Drawable>); 
 
 private:
+    void calculateIconBounds(); 
+    
+    juce::Rectangle<int> m_icon_bounds; 
+    std::unique_ptr<juce::Drawable> m_icon; 
     juce::String m_text; 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AddButton)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IconTextButton)
 };
+
 
 class CustomComboBox : public juce::ComboBox
 {
@@ -59,16 +68,8 @@ private:
     public:
         void drawComboBox(juce::Graphics&, int, int, bool,
             int, int, int, int, ComboBox&) override; 
-
         void drawPopupMenuBackground(juce::Graphics&, int, int) override; 
-
         void drawPopupMenuBackgroundWithOptions(juce::Graphics&, int, int, const juce::PopupMenu::Options&) override; 
-        
-        void drawPopupMenuItem (juce::Graphics&, const juce::Rectangle<int>& area,
-                            bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
-                            const juce::String& text, const juce::String& shortcutKeyText,
-                            const juce::Drawable* icon, const juce::Colour* textColour) override;
-
         juce::PopupMenu::Options getOptionsForComboBoxPopupMenu(juce::ComboBox& box, juce::Label& label) override; 
     };
 
