@@ -15,6 +15,7 @@
 #include "FileDisplayComponents.h"
 #include "SearchBar.h"
 #include "DataFilters.h"
+#include "FilterBar.h"
 
 //==============================================================================
 /*
@@ -47,6 +48,7 @@ private:
 
     FileListTable m_file_list;
     SearchBar m_search_bar; 
+    FilterBar m_filter_bar; 
 
     AddFileOverlay m_add_file_overlay; 
 

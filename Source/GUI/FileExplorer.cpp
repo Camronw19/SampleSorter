@@ -29,6 +29,8 @@ FileExplorer::FileExplorer(const SampleLibraryDataModel& sample_library)
     addAndMakeVisible(m_search_bar); 
     m_search_bar.addListener(this); 
 
+    addAndMakeVisible(m_filter_bar); 
+
     addAndMakeVisible(m_add_file_overlay); 
     m_add_file_overlay.setVisible(false); 
 }
@@ -46,8 +48,13 @@ void FileExplorer::paint (juce::Graphics& g)
 void FileExplorer::resized()
 {
     auto bounds = getLocalBounds(); 
+
+    auto search_filter_bounds = bounds.removeFromTop(30); 
     
-    m_search_bar.setBounds(bounds.removeFromTop(30)); 
+    m_search_bar.setBounds(search_filter_bounds.removeFromLeft(bounds.getWidth() / 3)); 
+    search_filter_bounds.removeFromLeft(spacing::padding1); 
+    m_filter_bar.setBounds(search_filter_bounds);
+
     bounds.removeFromTop(spacing::padding1); 
 
     m_file_list.setBounds(bounds); 
