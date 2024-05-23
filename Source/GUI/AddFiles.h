@@ -13,11 +13,12 @@
 #include <JuceHeader.h>
 #include "FileUtils.h"
 #include "SampleLibrary.h"
+#include "Buttons.h"
 
 //==============================================================================
 /*
 */
-class AddFilesButton  : public juce::Button, 
+class AddFilesButton  : public PlusButton, 
                         public AudioFileChooser
 {
 public:
