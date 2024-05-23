@@ -15,7 +15,7 @@
 #include "FileDisplayComponents.h"
 #include "SearchBar.h"
 #include "DataFilters.h"
-#include "FilterBar.h"
+#include "MultiSelect.h"
 
 //==============================================================================
 /*
@@ -48,8 +48,8 @@ private:
 
     FileListTable m_file_list;
     SearchBar m_search_bar; 
-    FilterBar m_filter_bar; 
-
+    MultiSelect m_filter_select; 
+    
     AddFileOverlay m_add_file_overlay; 
 
     FuzzySearchFilter m_fuzzy_search_filter; 

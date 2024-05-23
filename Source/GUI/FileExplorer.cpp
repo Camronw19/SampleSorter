@@ -29,7 +29,15 @@ FileExplorer::FileExplorer(const SampleLibraryDataModel& sample_library)
     addAndMakeVisible(m_search_bar); 
     m_search_bar.addListener(this); 
 
-    addAndMakeVisible(m_filter_bar); 
+    addAndMakeVisible(m_filter_select);
+    m_filter_select.setButtonText("Select Filters");
+    m_filter_select.addItem("Favorite", 1); 
+    m_filter_select.addSeparator();
+    m_filter_select.addItem("Kicks", 2); 
+    m_filter_select.addItem("Snares", 3); 
+    m_filter_select.addItem("Hats", 4); 
+    m_filter_select.addItem("Percs", 5); 
+
 
     addAndMakeVisible(m_add_file_overlay); 
     m_add_file_overlay.setVisible(false); 
@@ -53,7 +61,7 @@ void FileExplorer::resized()
     
     m_search_bar.setBounds(search_filter_bounds.removeFromLeft(bounds.getWidth() / 3)); 
     search_filter_bounds.removeFromLeft(spacing::padding1); 
-    m_filter_bar.setBounds(search_filter_bounds);
+    m_filter_select.setBounds(search_filter_bounds.removeFromLeft(bounds.getWidth() / 3));
 
     bounds.removeFromTop(spacing::padding1); 
 
