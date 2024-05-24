@@ -1,9 +1,9 @@
 /*
   ==============================================================================
 
-    Buttons.h
+    GenericComponents.h
     Created: 23 May 2024 8:55:40am
-    Author:  camro
+    Author: Camron Walsh 
 
   ==============================================================================
 */
@@ -26,7 +26,6 @@ public:
     void paintButton (juce::Graphics&, bool, bool) override;
     void resized() override;
 
-
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlusButton)
 };
@@ -43,18 +42,19 @@ public:
     int getFittedWidth(); 
 
     void setText(const juce::String); 
-    void setIcon(std::unique_ptr<juce::Drawable>); 
+    void setIcon(std::unique_ptr<juce::DrawablePath>&&); 
 
 private:
     void calculateIconBounds(); 
+    void calculateTextBounds(); 
     
-    juce::Rectangle<int> m_icon_bounds; 
-    std::unique_ptr<juce::Drawable> m_icon; 
     juce::String m_text; 
+    juce::Rectangle<int> m_icon_bounds; 
+    juce::Rectangle<int> m_text_bounds; 
+    std::unique_ptr<juce::DrawablePath> m_icon; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IconTextButton)
 };
-
 
 class CustomComboBox : public juce::ComboBox
 {

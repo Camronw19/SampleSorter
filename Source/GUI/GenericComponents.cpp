@@ -1,9 +1,9 @@
 /*
   ==============================================================================
 
-    Buttons.cpp
+    GenericComponents.cpp
     Created: 23 May 2024 8:55:40am
-    Author:  camro
+    Author: Camron Walsh 
 
   ==============================================================================
 */
@@ -38,8 +38,8 @@ void PlusButton::paintButton (juce::Graphics& g, bool is_mouse_over, bool is_but
     int center_x = bounds.getCentreX();
     int center_y = bounds.getCentreY();
 
-    const int width = 20; 
-    const int height = 2; 
+    int width = juce::jmin(bounds.getWidth(), bounds.getHeight()) / 2;
+    int height = juce::jmax(2, width / 10);
 
     g.setColour(getLookAndFeel().findColour(AppColors::Secondary)); 
 
@@ -71,36 +71,40 @@ IconTextButton::~IconTextButton()
 void IconTextButton::paintButton(juce::Graphics& g, bool is_mouse_over, bool is_button_down)
 {
     juce::Rectangle<int> bounds = getLocalBounds(); 
+    juce::Colour icon_text_colour; 
 
     if (is_mouse_over)
+    {
         g.setColour(getLookAndFeel().findColour(AppColors::Surface6dp));
+        icon_text_colour = getLookAndFeel().findColour(AppColors::Primary); 
+    }
     else
+    {
         g.setColour(getLookAndFeel().findColour(AppColors::Surface1dp)); 
+        icon_text_colour = getLookAndFeel().findColour(AppColors::OnBackground); 
+    }
 
     g.fillRoundedRectangle(bounds.toFloat(), rounding::rounding1); 
 
     // Set the color for the icon and text
-    g.setColour(getLookAndFeel().findColour(AppColors::OnBackground));
+    g.setColour(icon_text_colour); 
+    m_icon->setFill(icon_text_colour);
 
     if(!m_icon_bounds.isEmpty() && m_icon != nullptr)
-        m_icon->drawWithin(g, m_icon_bounds.toFloat(), juce::RectanglePlacement::fillDestination, 1.0f);
-   
+        m_icon->drawWithin(g, m_icon_bounds.toFloat(), juce::RectanglePlacement::centred, 1.0f);
+
     // Draw the text
     juce::Font font(fonts::base); 
     g.setFont(font);
-
-    // Calculate the area available for text
-    int textStartX = m_icon_bounds.getRight() + spacing::padding1; 
-    int textWidth = bounds.getWidth() - textStartX - spacing::padding1;
-
-    g.drawText(m_text, textStartX, 0, textWidth, bounds.getHeight(), juce::Justification::centredLeft);
-
+    g.drawText(m_text, m_text_bounds, juce::Justification::centredLeft);
 }
 
 void IconTextButton::resized()
 {
     calculateIconBounds(); 
     m_icon->setBounds(m_icon_bounds); 
+
+    calculateTextBounds(); 
 }
 
 void IconTextButton::setText(const juce::String text)
@@ -108,9 +112,9 @@ void IconTextButton::setText(const juce::String text)
     m_text = text; 
 }
 
-void IconTextButton::setIcon(std::unique_ptr<juce::Drawable> drawable)
+void IconTextButton::setIcon(std::unique_ptr<juce::DrawablePath>&& drawable_path)
 {
-    m_icon = std::move(drawable); 
+    m_icon = std::move(drawable_path); 
 }
 
 int IconTextButton::getFittedWidth()
@@ -134,6 +138,16 @@ void IconTextButton::calculateIconBounds()
     float icon_size = static_cast<float>(getBounds().getHeight()) / 2;
 
     m_icon_bounds.setBounds(padding, getHeight() / 4, icon_size, icon_size);
+}
+
+void IconTextButton::calculateTextBounds()
+{
+    auto bounds = getLocalBounds(); 
+
+    int start_x = m_icon_bounds.getRight() + spacing::padding1; 
+    int text_width = bounds.getWidth() - start_x - spacing::padding1;
+
+    m_text_bounds.setBounds(start_x, 0, text_width, bounds.getHeight());
 }
 
 //==============================================================================
