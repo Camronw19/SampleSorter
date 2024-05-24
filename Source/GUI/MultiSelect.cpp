@@ -16,10 +16,6 @@ MultiSelect::MultiSelect()
     : m_popup_active(false)
 {
     addAndMakeVisible(m_button); 
-    auto rect = std::make_unique<juce::DrawableRectangle>();
-    rect->setRectangle(juce::Rectangle<float>(50, 50, 100, 100));
-    rect->setFill(juce::Colours::lightblue);
-    m_button.setIcon(std::move(rect)); 
     m_button.onClick = [this]() { showPopupIfNotActive(); };
 }
 
@@ -183,14 +179,19 @@ void MultiSelect::clear (const juce::NotificationType notification)
 }
 
 //==============================================================================
+void MultiSelect::setSelectedItemIndex(const int index, const juce::NotificationType notification)
+{
+    addSelectedId(getItemId(index), notification); 
+}
+
 void MultiSelect::setButtonText(const juce::String text)
 {
     m_button.setText(text); 
 }
 
-void MultiSelect::setSelectedItemIndex(const int index, const juce::NotificationType notification)
+void MultiSelect::setButtonIcon(std::unique_ptr<juce::DrawablePath>&& drawable)
 {
-    addSelectedId(getItemId(index), notification); 
+    m_button.setIcon(std::move(drawable)); 
 }
 
 void MultiSelect::addSelectedId (const int new_item_id, const juce::NotificationType notification)

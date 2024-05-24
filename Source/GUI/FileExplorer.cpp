@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "FileExplorer.h"
 #include "UIConfig.h"
+#include "Icons.h"
 
 //==============================================================================
 FileExplorer::FileExplorer(const SampleLibraryDataModel& sample_library)
@@ -29,15 +30,8 @@ FileExplorer::FileExplorer(const SampleLibraryDataModel& sample_library)
     addAndMakeVisible(m_search_bar); 
     m_search_bar.addListener(this); 
 
-    addAndMakeVisible(m_filter_select);
-    m_filter_select.setButtonText("Select Filters");
-    m_filter_select.addItem("Favorite", 1); 
-    m_filter_select.addSeparator();
-    m_filter_select.addItem("Kicks", 2); 
-    m_filter_select.addItem("Snares", 3); 
-    m_filter_select.addItem("Hats", 4); 
-    m_filter_select.addItem("Percs", 5); 
-
+  
+    initMultiSelect();
 
     addAndMakeVisible(m_add_file_overlay); 
     m_add_file_overlay.setVisible(false); 
@@ -114,5 +108,19 @@ void FileExplorer::fileDragExit(const juce::StringArray&)
 void FileExplorer::onFileListRowSelected(int selected_file_id)
 {
     m_sample_library.setActiveFile(selected_file_id); 
+}
+
+void FileExplorer::initMultiSelect()
+{
+    addAndMakeVisible(m_filter_select);
+    m_filter_select.setButtonText("Select Filters");
+    m_filter_select.addItem("Favorite", 1); 
+    m_filter_select.addSeparator();
+    m_filter_select.addItem("Kicks", 2); 
+    m_filter_select.addItem("Snares", 3); 
+    m_filter_select.addItem("Hats", 4); 
+    m_filter_select.addItem("Percs", 5); 
+
+    m_filter_select.setButtonIcon(createFilterIcon()); 
 }
 

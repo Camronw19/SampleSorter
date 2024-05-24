@@ -41,6 +41,7 @@ public:
     //=======================================================
     void setSelectedItemIndex(const int, const juce::NotificationType); 
     void setButtonText(const juce::String); 
+    void setButtonIcon(std::unique_ptr<juce::DrawablePath>&&);
     void addSelectedId(const int, const juce::NotificationType);
     void removeSelectedId(const int, const juce::NotificationType); 
     bool selectIfEnabled(const int);
@@ -55,8 +56,8 @@ public:
 private: 
     void showPopupIfNotActive();
 
-    std::vector<juce::Value> m_selected_ids;    
     bool m_popup_active; 
+    std::vector<juce::Value> m_selected_ids;    
 
     IconTextButton m_button;
     juce::PopupMenu m_popup; 

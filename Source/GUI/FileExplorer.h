@@ -40,7 +40,10 @@ private:
     
     // File dnd methods
     void fileDragEnter(const juce::StringArray&, int, int) override;
-    void fileDragExit(const juce::StringArray&) override; 
+    void fileDragExit(const juce::StringArray&) override;  
+
+    // Init Methods
+    void initMultiSelect(); 
 
     SampleLibraryDataModel m_sample_library; 
     std::shared_ptr<juce::XmlElement> m_sample_library_xml; 
