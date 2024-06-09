@@ -55,7 +55,6 @@ private:
     
     AddFileOverlay m_add_file_overlay; 
 
-    FuzzySearchFilter m_fuzzy_search_filter; 
     int m_prev_search_length; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileExplorer)

@@ -30,7 +30,6 @@ FileExplorer::FileExplorer(const SampleLibraryDataModel& sample_library)
     addAndMakeVisible(m_search_bar); 
     m_search_bar.addListener(this); 
 
-  
     initMultiSelect();
 
     addAndMakeVisible(m_add_file_overlay); 
@@ -75,6 +74,7 @@ void FileExplorer::textEditorTextChanged(juce::TextEditor& text_editor)
 
         m_prev_search_length = search_text.length();
 
+        FuzzySearchFilter m_fuzzy_search_filter; 
         m_fuzzy_search_filter.filter(m_sample_library_xml_filtered, search_text); 
         m_file_list.setDataModel(m_sample_library_xml_filtered); 
     }
