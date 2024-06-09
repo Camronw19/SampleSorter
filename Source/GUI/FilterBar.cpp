@@ -37,10 +37,16 @@ void FilterDisplay::resized()
 //==============================================================================
 
 FilterBar::FilterBar()
+    : m_filter_select()
 {
-    addAndMakeVisible(m_add_filter); 
-    m_add_filter.addItem("TEST", 1); 
-    m_add_filter.addItem("TEST 2", 2); 
+    addAndMakeVisible(m_filter_select); 
+    m_filter_select.setButtonText("Select Filters");
+    m_filter_select.addItem("Favorite", 1); 
+    m_filter_select.addSeparator();
+    m_filter_select.addItem("Kicks", 2); 
+    m_filter_select.addItem("Snares", 3); 
+    m_filter_select.addItem("Hats", 4); 
+    m_filter_select.addItem("Percs", 5); 
 
     addAndMakeVisible(m_filter_1); 
 }
@@ -60,5 +66,5 @@ void FilterBar::resized()
     auto bounds = getLocalBounds(); 
     bounds.reduce(spacing::padding1, spacing::padding1); 
 
-    m_add_filter.setBounds(bounds.removeFromLeft(getWidth() / 4)); 
+    m_filter_select.setBounds(bounds.removeFromLeft(getWidth() / 4)); 
 }

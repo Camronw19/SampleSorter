@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "GenericComponents.h"
+#include "MultiSelect.h"
 
 //==============================================================================
 /*
@@ -40,7 +41,7 @@ public:
     void resized() override;
 
 private:
-    CustomComboBox m_add_filter; 
+    MultiSelect m_filter_select; 
     FilterDisplay m_filter_1; 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterBar)
 };
