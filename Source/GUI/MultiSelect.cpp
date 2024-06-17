@@ -1,5 +1,5 @@
-/*
-  ==============================================================================
+
+ /*==============================================================================
 
     MultiSelect.cpp (Adapted from juce::ComboBox) 
     Created: 23 May 2024 12:57:30pm
@@ -68,7 +68,7 @@ void MultiSelect::addSectionHeading (const juce::String& heading_name)
 
 void MultiSelect::setItemEnabled (int item_id, bool should_be_enabled)
 {
-    if (juce::PopupMenu::Item* item = getItemForId (item_id))
+    if (juce::PopupMenu::Item* item = getItemForId(item_id))
         item->isEnabled = should_be_enabled;
 }
 
@@ -198,8 +198,7 @@ void MultiSelect::addSelectedId (const int new_item_id, const juce::Notification
 {
     m_selected_ids.push_back(juce::Value(new_item_id)); 
     repaint();
-
-    //sendChange (notification);
+    sendChangeMessage();
 }
 
 void MultiSelect::removeSelectedId(const int item_id, const juce::NotificationType notification)
@@ -212,6 +211,8 @@ void MultiSelect::removeSelectedId(const int item_id, const juce::NotificationTy
             m_selected_ids.erase(new_end, m_selected_ids.end());
 
             repaint(); 
+            sendChangeMessage();
+
             return; 
         }
     }

@@ -16,12 +16,14 @@
 #include "SearchBar.h"
 #include "DataFilters.h"
 #include "MultiSelect.h"
+#include "map"
 
 //==============================================================================
 /*
 */
 class FileExplorer  : public juce::Component,
                       public juce::TextEditor::Listener, 
+                      public juce::ChangeListener,
                       public SampleLibraryDataModel::Listener,
                       public AudioFileDragAndDropTarget
 {
@@ -37,6 +39,9 @@ public:
 private:
     void sampleAdded(const SampleInfoDataModel& addedSample) override; 
     void onFileListRowSelected(int); 
+
+    void changeListenerCallback(juce::ChangeBroadcaster*) override;
+    void applyFilters(); 
     
     // File dnd methods
     void fileDragEnter(const juce::StringArray&, int, int) override;
@@ -56,6 +61,8 @@ private:
     AddFileOverlay m_add_file_overlay; 
 
     int m_prev_search_length; 
+    std::map<juce::String, int> m_filter_ids; 
+    FilterArray m_filters; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileExplorer)
 };

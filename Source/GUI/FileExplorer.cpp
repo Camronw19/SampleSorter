@@ -3,7 +3,7 @@
 
     FileExplorer.cpp
     Created: 13 May 2024 6:20:10pm
-    Author:  camro
+    Author: Camron Walsh 
 
   ==============================================================================
 */
@@ -67,17 +67,56 @@ void FileExplorer::textEditorTextChanged(juce::TextEditor& text_editor)
     if (&text_editor == &m_search_bar)
     {
         juce::String search_text = m_search_bar.getText();
-        
-        // Use previous filtered XML if user is adding to search, otherwise regenerate 
-        if (search_text.length() < m_prev_search_length || m_prev_search_length == 0)
-            m_sample_library_xml_filtered = std::make_shared<juce::XmlElement>(*m_sample_library_xml); 
 
-        m_prev_search_length = search_text.length();
+        m_filters.remove<FuzzySearchFilter>(); 
 
-        FuzzySearchFilter m_fuzzy_search_filter; 
-        m_fuzzy_search_filter.filter(m_sample_library_xml_filtered, search_text); 
-        m_file_list.setDataModel(m_sample_library_xml_filtered); 
+        if(search_text.length() != 0)
+        {
+            std::unique_ptr fuzzy_search_filter = std::make_unique<FuzzySearchFilter>(); 
+            fuzzy_search_filter->setQuery(search_text); 
+            m_filters.add(std::move(fuzzy_search_filter)); 
+        }
+
+        applyFilters(); 
     }
+}
+
+
+void FileExplorer::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    if (source == &m_filter_select)
+    {
+        if (m_filter_select.IsSelected(m_filter_ids.find("Favorite")->second))
+            m_filters.add(std::make_unique<FavoriteFilter>());
+        else
+            m_filters.remove<FavoriteFilter>(); 
+    }
+
+    applyFilters(); 
+}
+
+void FileExplorer::applyFilters()
+{
+    // Reset filtered data set
+    m_sample_library_xml_filtered = m_sample_library.getState().createXml();
+
+    for (const auto& filter : m_filters)
+    {
+        std::vector<juce::XmlElement*> elementsToRemove;
+
+        // Collect elements that do not match the filter
+        for (auto* item = m_sample_library_xml_filtered->getFirstChildElement(); item != nullptr; item = item->getNextElement())
+        {
+            if (filter->filter(*item))
+                elementsToRemove.push_back(item);
+        }
+
+        // Remove collected elements
+        for (auto* item : elementsToRemove)
+            m_sample_library_xml_filtered->removeChildElement(item, true);
+    }
+
+    m_file_list.setDataModel(m_sample_library_xml_filtered);
 }
 
 void FileExplorer::sampleAdded(const SampleInfoDataModel& added_sample)
@@ -112,15 +151,25 @@ void FileExplorer::onFileListRowSelected(int selected_file_id)
 
 void FileExplorer::initMultiSelect()
 {
-    addAndMakeVisible(m_filter_select);
+    m_filter_ids = {
+        {"Favorite", 1},
+        {"Kicks", 2},
+        {"Snares", 3},
+        {"Hats", 4},
+        {"Percs", 5}
+    };
+
+    m_filter_select.addChangeListener(this); 
     m_filter_select.setButtonText("Select Filters");
-    m_filter_select.addItem("Favorite", 1); 
-    m_filter_select.addSeparator();
-    m_filter_select.addItem("Kicks", 2); 
-    m_filter_select.addItem("Snares", 3); 
-    m_filter_select.addItem("Hats", 4); 
-    m_filter_select.addItem("Percs", 5); 
+
+    for (const auto& item : m_filter_ids)
+    {
+        m_filter_select.addItem(item.first, item.second);
+        if (item.first == "Favorite")
+            m_filter_select.addSeparator(); 
+    }
 
     m_filter_select.setButtonIcon(createFilterIcon()); 
+    addAndMakeVisible(m_filter_select);
 }
 

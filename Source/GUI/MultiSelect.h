@@ -12,7 +12,8 @@
 #include <JuceHeader.h>
 #include "GenericComponents.h"
 
-class MultiSelect : public juce::Component
+class MultiSelect : public juce::Component, 
+                    public juce::ChangeBroadcaster
 {
 public: 
     explicit MultiSelect(); 
