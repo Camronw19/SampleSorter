@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 #include "FileUtils.h"
 #include "SampleLibrary.h"
-#include "Buttons.h"
+#include "GenericComponents.h"
 
 //==============================================================================
 /*

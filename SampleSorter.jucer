@@ -23,8 +23,16 @@
             file="Source/Utils/ValueTreeObjectList.h"/>
     </GROUP>
     <GROUP id="{70DC7FB3-55D8-769D-2605-061BF484BC22}" name="GUI">
+      <FILE id="llLw9w" name="Icons.cpp" compile="1" resource="0" file="Source/GUI/Icons.cpp"/>
+      <FILE id="B7UeN9" name="Icons.h" compile="0" resource="0" file="Source/GUI/Icons.h"/>
+      <FILE id="UgygYX" name="MultiSelect.cpp" compile="1" resource="0" file="Source/GUI/MultiSelect.cpp"/>
+      <FILE id="C3xWiX" name="MultiSelect.h" compile="0" resource="0" file="Source/GUI/MultiSelect.h"/>
       <FILE id="X62HSB" name="AddFiles.cpp" compile="1" resource="0" file="Source/GUI/AddFiles.cpp"/>
       <FILE id="VQS8LE" name="AddFiles.h" compile="0" resource="0" file="Source/GUI/AddFiles.h"/>
+      <FILE id="xxcmft" name="GenericComponents.cpp" compile="1" resource="0"
+            file="Source/GUI/GenericComponents.cpp"/>
+      <FILE id="xEKBDs" name="GenericComponents.h" compile="0" resource="0"
+            file="Source/GUI/GenericComponents.h"/>
       <FILE id="lVyHuv" name="FileDisplayComponents.cpp" compile="1" resource="0"
             file="Source/GUI/FileDisplayComponents.cpp"/>
       <FILE id="qhD03V" name="FileDisplayComponents.h" compile="0" resource="0"
@@ -32,6 +40,8 @@
       <FILE id="iJo69q" name="FileExplorer.cpp" compile="1" resource="0"
             file="Source/GUI/FileExplorer.cpp"/>
       <FILE id="sgrIEQ" name="FileExplorer.h" compile="0" resource="0" file="Source/GUI/FileExplorer.h"/>
+      <FILE id="M08Mc4" name="FilterBar.cpp" compile="1" resource="0" file="Source/GUI/FilterBar.cpp"/>
+      <FILE id="dznbQJ" name="FilterBar.h" compile="0" resource="0" file="Source/GUI/FilterBar.h"/>
       <FILE id="RXlOIl" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/GUI/MainComponent.cpp"/>
       <FILE id="DIAnJP" name="MainComponent.h" compile="0" resource="0" file="Source/GUI/MainComponent.h"/>

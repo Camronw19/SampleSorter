@@ -11,22 +11,47 @@
 #include "DataFilters.h"
 #include  "SampleInfo.h"
 
-void FuzzySearchFilter::filter(std::shared_ptr<juce::XmlElement>& tree_to_filter, juce::String query)
+FuzzySearchFilter::FuzzySearchFilter(const juce::String query) 
+    : m_query(query)
 {
-    std::vector<juce::XmlElement*> elementsToRemove;
 
-    for (auto* child_element : tree_to_filter->getChildIterator())
+}
+
+const bool FuzzySearchFilter::filter(const juce::XmlElement& element)
+{
+    juce::String name = element.getStringAttribute(ModelIdentifiers::name); 
+
+    if (name.isNotEmpty())
     {
-        juce::String name = child_element->getStringAttribute(ModelIdentifiers::name);
-        if (!name.containsIgnoreCase(query))
+        if (!name.containsIgnoreCase(m_query))
         {
-            elementsToRemove.push_back(child_element);
+            return true; 
         }
     }
 
-    for (auto* element : elementsToRemove)
-    {
-        tree_to_filter->removeChildElement(element, true);
-    }
-
+    return false; 
 }
+
+void FuzzySearchFilter::setQuery(const juce::String query)
+{
+    m_query = query; 
+}
+
+
+const bool FavoriteFilter::filter(const juce::XmlElement& element)
+{
+    bool is_favorite = element.getBoolAttribute(ModelIdentifiers::is_favorite); 
+    
+    if (!is_favorite)
+        return true;
+    else
+        return false; 
+}
+
+//===============================================================================
+
+void FilterArray::add(std::unique_ptr<Filter> filter)
+{
+    m_filters.push_back(std::move(filter)); 
+}
+
