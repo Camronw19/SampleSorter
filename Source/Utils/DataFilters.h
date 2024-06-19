@@ -23,6 +23,8 @@ public:
 class FuzzySearchFilter : public Filter
 {
 public: 
+    FuzzySearchFilter(const juce::String); 
+
     const bool filter(const juce::XmlElement&) override; 
     void setQuery(const juce::String);
 
@@ -48,6 +50,9 @@ public:
 
     template<typename Derived>
     bool exists(); 
+
+    template<typename Derived>
+    Derived* get(); 
 
     using iterator = std::vector<std::unique_ptr<Filter>>::iterator;
     using const_iterator = std::vector<std::unique_ptr<Filter>>::const_iterator;
@@ -83,5 +88,16 @@ bool FilterArray::exists()
     }
 
     return false; 
+}
+
+template<typename Derived>
+Derived* FilterArray::get()
+{
+    for (auto& filter : m_filters)
+    {
+        if (auto derivedPtr = dynamic_cast<Derived*>(filter.get()))
+            return derivedPtr;
+    }
+    return nullptr;
 }
 

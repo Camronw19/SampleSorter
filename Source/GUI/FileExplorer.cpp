@@ -33,7 +33,7 @@ FileExplorer::FileExplorer(const SampleLibraryDataModel& sample_library)
     initMultiSelect();
 
     addAndMakeVisible(m_add_file_overlay); 
-    m_add_file_overlay.setVisible(false); 
+    m_add_file_overlay.setVisible(false);   
 }
 
 FileExplorer::~FileExplorer()
@@ -66,21 +66,25 @@ void FileExplorer::textEditorTextChanged(juce::TextEditor& text_editor)
 {
     if (&text_editor == &m_search_bar)
     {
+        FuzzySearchFilter* filter = m_filters.get<FuzzySearchFilter>(); 
         juce::String search_text = m_search_bar.getText();
 
-        m_filters.remove<FuzzySearchFilter>(); 
-
-        if(search_text.length() != 0)
+        if (search_text.length() == 0) // Remove filter if search is empty
         {
-            std::unique_ptr fuzzy_search_filter = std::make_unique<FuzzySearchFilter>(); 
-            fuzzy_search_filter->setQuery(search_text); 
-            m_filters.add(std::move(fuzzy_search_filter)); 
+            m_filters.remove<FuzzySearchFilter>();
+        }
+        else if (filter != nullptr) // Modify search filter query if the filter exists
+        {
+            filter->setQuery(search_text);
+        }
+        else // Initalize new search filter if it doesn't exist
+        {
+            m_filters.add(std::make_unique<FuzzySearchFilter>(search_text)); 
         }
 
         applyFilters(); 
     }
 }
-
 
 void FileExplorer::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
@@ -88,7 +92,7 @@ void FileExplorer::changeListenerCallback(juce::ChangeBroadcaster* source)
     {
         if (m_filter_select.IsSelected(m_filter_ids.find("Favorite")->second))
             m_filters.add(std::make_unique<FavoriteFilter>());
-        else
+        else if (m_filters.exists<FavoriteFilter>())
             m_filters.remove<FavoriteFilter>(); 
     }
 
@@ -98,14 +102,14 @@ void FileExplorer::changeListenerCallback(juce::ChangeBroadcaster* source)
 void FileExplorer::applyFilters()
 {
     // Reset filtered data set
-    m_sample_library_xml_filtered = m_sample_library.getState().createXml();
+    m_sample_library_xml = m_sample_library.getState().createXml();
 
     for (const auto& filter : m_filters)
     {
         std::vector<juce::XmlElement*> elementsToRemove;
 
         // Collect elements that do not match the filter
-        for (auto* item = m_sample_library_xml_filtered->getFirstChildElement(); item != nullptr; item = item->getNextElement())
+        for (auto* item = m_sample_library_xml->getFirstChildElement(); item != nullptr; item = item->getNextElement())
         {
             if (filter->filter(*item))
                 elementsToRemove.push_back(item);
@@ -113,10 +117,10 @@ void FileExplorer::applyFilters()
 
         // Remove collected elements
         for (auto* item : elementsToRemove)
-            m_sample_library_xml_filtered->removeChildElement(item, true);
+            m_sample_library_xml->removeChildElement(item, true);
     }
 
-    m_file_list.setDataModel(m_sample_library_xml_filtered);
+    m_file_list.setDataModel(m_sample_library_xml);
 }
 
 void FileExplorer::sampleAdded(const SampleInfoDataModel& added_sample)

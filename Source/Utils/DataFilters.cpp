@@ -11,6 +11,12 @@
 #include "DataFilters.h"
 #include  "SampleInfo.h"
 
+FuzzySearchFilter::FuzzySearchFilter(const juce::String query) 
+    : m_query(query)
+{
+
+}
+
 const bool FuzzySearchFilter::filter(const juce::XmlElement& element)
 {
     juce::String name = element.getStringAttribute(ModelIdentifiers::name); 
