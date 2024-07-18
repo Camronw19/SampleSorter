@@ -4,7 +4,8 @@
 MainComponent::MainComponent()
     :m_file_explorer(m_sample_library), 
      m_waveform_display(m_sample_library), 
-     m_add_files(m_sample_library)
+     m_add_files(m_sample_library), 
+     m_transport_state(Stopped)
 { 
     addAndMakeVisible(m_file_explorer);
     addAndMakeVisible(m_add_files);
@@ -23,16 +24,9 @@ MainComponent::MainComponent()
         setAudioChannels (2, 2);
     }
 
-    for (int i = 0; i < 5; i++)
-    {
-        SampleInfoDataModel sample_model;
-
-        juce::String id(sample_model.getId());
-        sample_model.setName("Sample Info " + id); 
-        sample_model.setFileExtension(".wav"); 
-        DBG("ADDING FILE"); 
-        m_sample_library.AddSample(sample_model); 
-    }
+    m_format_manager.registerBasicFormats(); 
+    m_transport_source.addChangeListener(this);
+    m_sample_library.addListener(*this); 
 }
 
 MainComponent::~MainComponent()
@@ -45,18 +39,23 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-
+    m_transport_source.prepareToPlay(samplesPerBlockExpected, sampleRate); 
 }
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
+    if (m_reader_source.get() == nullptr)
+    {
+        bufferToFill.clearActiveBufferRegion(); 
+        return;
+    }
 
-    bufferToFill.clearActiveBufferRegion();
+    m_transport_source.getNextAudioBlock(bufferToFill);
 }
 
 void MainComponent::releaseResources()
 {
-
+    m_transport_source.releaseResources(); 
 }
 
 //==============================================================================
@@ -76,4 +75,63 @@ void MainComponent::resized()
     bounds.removeFromTop(spacing::padding2);
 
     m_waveform_display.setBounds(bounds); 
+}
+
+
+void MainComponent::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    if (source == &m_transport_source)
+    {
+        if (m_transport_source.isPlaying())
+            changeState(Playing);
+        else
+            changeState(Stopped);
+    }
+}
+
+
+void MainComponent::changeState(TransportState new_state)
+{
+    if (m_transport_state != new_state)
+    {
+        m_transport_state = new_state;
+
+        switch (m_transport_state)
+        {
+        case Stopped:
+            //stopButton.setEnabled(false);
+            //playButton.setEnabled(true);
+           m_transport_source.setPosition(0.0);
+            break;
+
+        case Starting:
+            //playButton.setEnabled(false);
+            m_transport_source.start();
+            break;
+
+        case Playing:
+            //stopButton.setEnabled(true);
+            break;
+
+        case Stopping:
+            m_transport_source.stop();
+            break;
+        }
+    }
+}
+
+
+void MainComponent::activeFileChanged(const SampleInfoDataModel& active_sample)
+{
+    juce::File sample_file(active_sample.getFilePath()); 
+    auto* reader = m_format_manager.createReaderFor(sample_file);
+
+    if (reader != nullptr)
+    {
+        auto newSource = std::make_unique<juce::AudioFormatReaderSource>(reader, true);
+        m_transport_source.setSource(newSource.get(), 0, nullptr, reader->sampleRate);
+        //playButton.setEnabled(true);
+        m_reader_source.reset(newSource.release());
+        changeState(Starting); 
+    }
 }

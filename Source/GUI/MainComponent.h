@@ -11,7 +11,18 @@
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainComponent  : public juce::AudioAppComponent
+
+enum TransportState
+{
+    Stopped, 
+    Starting, 
+    Playing, 
+    Stopping
+};
+
+class MainComponent  : public juce::AudioAppComponent,
+                       public juce::ChangeListener,
+                       SampleLibraryDataModel::Listener
 {
 public:
     //==============================================================================
@@ -27,13 +38,25 @@ public:
     void paint (juce::Graphics& g) override;
     void resized() override;
 
+    //==============================================================================
+    void changeListenerCallback(juce::ChangeBroadcaster*) override; 
+    void changeState(TransportState); 
+    void activeFileChanged(const SampleInfoDataModel&) override; 
+
 private:
     //==============================================================================
     SampleLibraryDataModel m_sample_library;
 
+    // GUI
     FileExplorer m_file_explorer;
     AddFilesButton m_add_files;
     VTWaveformDisplay m_waveform_display; 
 
+    // Audio 
+    juce::AudioFormatManager m_format_manager; 
+    std::unique_ptr<juce::AudioFormatReaderSource> m_reader_source; 
+    juce::AudioTransportSource m_transport_source; 
+    TransportState m_transport_state; 
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
